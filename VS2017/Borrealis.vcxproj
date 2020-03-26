@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4550E91A-691E-4092-B3E2-61D6B1C242D9}</ProjectGuid>
+    <ProjectGuid>{FE2C9990-49B6-4227-9A9C-6B8FD1FFF62A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Labs</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>

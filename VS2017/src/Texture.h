@@ -29,7 +29,5 @@ public:
 
 	void Bind();
 	void Unbind();
-
-	unsigned int getId() { return id; };
 };
 
