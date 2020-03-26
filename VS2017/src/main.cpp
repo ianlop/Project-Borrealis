@@ -40,6 +40,9 @@ static bool glError(const char* funct, const char* file, int line) {
 }
 
 
+Camera cam;
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
 
 int main() {
 
@@ -73,7 +76,7 @@ int main() {
 	// OpenGL Version Check
 	//std::cout << glGetString(GL_VERSION) << std::endl;
 
-
+	glfwSetScrollCallback(win, scroll_callback);
 
 	// Shader Creation
 	Shader sh("assets/shaders/vertexShader.glsl", "assets/shaders/fragShader.glsl");
@@ -194,12 +197,11 @@ int main() {
 	glm::vec3 Center = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	//Eventually removed, since no mouse movement for camera
-	float pitch = acos(glm::dot(Center - Eye, glm::vec3(0.0f, 1.0f, 0.0f)) / (glm::length(Center - Eye) * glm::length(glm::vec3(0.0f, 1.0f, 0.0f))));
 
-	Camera cam(&Eye, &Center, &Up, &spd, PERSPECTIVE, win);
+	cam = Camera(&Eye, &Center, &Up, &spd, PERSPECTIVE, win);
 
-	
+
+
 	float lastFrameTime = glfwGetTime();
 
 	// Disabling mouse cursor
@@ -207,7 +209,6 @@ int main() {
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_FRAMEBUFFER_SRGB);
 
 	bool hasRandomized = false;
 	float n = 1.f;
@@ -342,60 +343,13 @@ int main() {
 			olaf.changeType(GL_POINTS);
 		}
 
+		
 
-		/*if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS) {
-			if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			{
-				olaf.moveBy(-.1f, .0f, .0f);
-			}
-			else
-			{
-				olaf.rotateBy(0.f, -1.f, 0.f);
-			}
-		}
-		if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS) {
-			if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			{
-				olaf.moveBy(.1f, .0f, .0f);
-			}
-			else
-			{
-				olaf.rotateBy(0.f, 1.f, 0.f);
-			}
-		}
-		if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS) {
-			if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			{
-				olaf.moveBy(.0f, .0f, .1f);
-			}
-		}
-		if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS) {
-			if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			{
-				olaf.moveBy(.0f, .0f, -.1f);
-			}
-		}*/
-		
-		
-		if (glfwGetKey(win, GLFW_KEY_U) == GLFW_PRESS){
-			olaf.scaleUpDown(1.1f);
-		}
-		if (glfwGetKey(win, GLFW_KEY_J) == GLFW_PRESS){
-			olaf.scaleUpDown(.9f);
-		}
 		if (glfwGetKey(win, GLFW_KEY_HOME) == GLFW_PRESS) {
 			cam.reset();
-			olaf.reset();
 		}
-		if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_PRESS){
-			if (!hasRandomized) {
-				hasRandomized = true;
-				olaf.randomizePos();
-			}
-		}
-		if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_RELEASE) {
-			hasRandomized = false;
-		}
+
+
 		if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS)
 		{
 			plane.setTexture(&snow);
@@ -420,6 +374,7 @@ int main() {
 			hat1.setColor(glm::vec3(0.f));
 			hat3.setColor(glm::vec3(0.f));
 		}
+
 		if (glfwGetKey(win, GLFW_KEY_B) == GLFW_PRESS && !hasTurned)
 		{
 			shadows = !shadows;
@@ -438,4 +393,10 @@ int main() {
 	glfwTerminate();
 
 	return 0;
+}
+
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	cam.zoom(-yoffset);
 }

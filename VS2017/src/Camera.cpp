@@ -14,12 +14,12 @@ Camera::Camera(glm::vec3* Eye, glm::vec3* Center, glm::vec3* Up, float* _speed, 
 	speed = _speed;
 	radius = 10.f;
 	position = 0.f;
-	angle = 70.f;
+	fov = 70.f;
 
 	if (Type == PERSPECTIVE) 
 	{
 		// projection matrix to have camera in perspective
-		projectionMatrix = glm::perspective(glm::radians(angle),  // field of view in degrees
+		projectionMatrix = glm::perspective(glm::radians(fov),  // field of view in degrees
 			1280.0f / 720.0f,      // aspect ratio
 			0.01f, 200.0f);       // near and far (near > 0)
 	}
@@ -101,7 +101,7 @@ void Camera::processMovement(GLFWwindow* win, float deltaTime)
 void Camera::updateView(Shader sh, GLFWwindow* win, float deltaTime) {
 
 	// Projection Transform
-	projectionMatrix = glm::perspective(glm::radians(angle),  // field of view in degrees
+	projectionMatrix = glm::perspective(glm::radians(fov),  // field of view in degrees
 		1024.0f / 768.0f,      // aspect ratio
 		0.01f, 200.0f);       // near and far (near > 0)
 	sh.setMat4("projectionMatrix", projectionMatrix);
@@ -130,4 +130,9 @@ void Camera::reset() {
 
 	*camEye = glm::vec3(0.f, 10.f, 10.f);
 
+}
+
+void Camera::zoom(double amount)
+{
+	fov += amount;
 }
