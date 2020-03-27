@@ -37,6 +37,7 @@ static bool glError(const char* funct, const char* file, int line) {
 		return false;
 	}
 	return true;
+
 }
 
 
