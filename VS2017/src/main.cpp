@@ -94,31 +94,31 @@ int main() {
 	// creating line
 	Mesh _line(line, sizeof(line), glm::vec3(1.0f, 1.0f, 0.0f));
 
-	objMesh plane("assets/models/plane.obj", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
+	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
 
 	//objMesh id("assets/models/sphere.obj", glm::vec3(1.f), glm::vec3(10.f, 1.1f, 10.f), glm::vec3(.1f));
 
-	objMesh torso("assets/models/sphere.obj", glm::vec3(.99f), glm::vec3(0.f, 2.1f, 0.f), glm::vec3(1.5f, 1.f, 1.f));
-	objMesh button1("assets/models/sphere.obj", glm::vec3(0.f), glm::vec3(0.f, 2.6f, .9f), glm::vec3(.2f, .2f, .2f));
-	objMesh button2("assets/models/sphere.obj", glm::vec3(0.f), glm::vec3(0.f, 2.1f, .9f), glm::vec3(.2f, .2f, .2f));
-	objMesh button3("assets/models/sphere.obj", glm::vec3(0.f), glm::vec3(0.f, 1.6f, .9f), glm::vec3(.2f, .2f, .2f));
+	objMesh torso("assets/models/sphere.ob", glm::vec3(.99f), glm::vec3(0.f, 2.1f, 0.f), glm::vec3(1.5f, 1.f, 1.f));
+	objMesh button1("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 2.6f, .9f), glm::vec3(.2f, .2f, .2f));
+	objMesh button2("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 2.1f, .9f), glm::vec3(.2f, .2f, .2f));
+	objMesh button3("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 1.6f, .9f), glm::vec3(.2f, .2f, .2f));
 
-	objMesh head("assets/models/sphere.obj", glm::vec3(1.f), glm::vec3(0.f, 3.6f, 0.f), glm::vec3(1.2f));
-	objMesh hat1("assets/models/cube.obj", glm::vec3(1.f), glm::vec3(0.f, 4.8f, 0.f), glm::vec3(1.f, .3f, 1.f));
-	objMesh hat2("assets/models/cube.obj", glm::vec3(1.f, .88f, .42f), glm::vec3(0.f, 5.8f, 0.f), glm::vec3(.7f, .5f, .7f));
-	objMesh hat3("assets/models/cube.obj", glm::vec3(1.f), glm::vec3(0.f, 6.8f, 0.f), glm::vec3(.25f, .7f, .25f));
-	objMesh eye("assets/models/cube.obj", glm::vec3(1.f), glm::vec3(0.f, 4.1f, 1.f), glm::vec3(.8f, .2f, .2f));
+	objMesh head("assets/models/sphere.ob", glm::vec3(1.f), glm::vec3(0.f, 3.6f, 0.f), glm::vec3(1.2f));
+	objMesh hat1("assets/models/cube.ob", glm::vec3(1.f), glm::vec3(0.f, 4.8f, 0.f), glm::vec3(1.f, .3f, 1.f));
+	objMesh hat2("assets/models/cube.ob", glm::vec3(1.f, .88f, .42f), glm::vec3(0.f, 5.8f, 0.f), glm::vec3(.7f, .5f, .7f));
+	objMesh hat3("assets/models/cube.ob", glm::vec3(1.f), glm::vec3(0.f, 6.8f, 0.f), glm::vec3(.25f, .7f, .25f));
+	objMesh eye("assets/models/cube.ob", glm::vec3(1.f), glm::vec3(0.f, 4.1f, 1.f), glm::vec3(.8f, .2f, .2f));
 
-	objMesh leftArm("assets/models/cube.obj", glm::vec3(.5f, .37f, .2f), glm::vec3(2.8f, 2.1f, 0.f), glm::vec3(1.5f, .1f, .1f));
-	objMesh rightArm("assets/models/cube.obj", glm::vec3(.5f, .37f, .2f), glm::vec3(-2.8f, 2.1f, 0.f), glm::vec3(1.5f, .1f, .1f));
+	objMesh leftArm("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(2.8f, 2.1f, 0.f), glm::vec3(1.5f, .1f, .1f));
+	objMesh rightArm("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(-2.8f, 2.1f, 0.f), glm::vec3(1.5f, .1f, .1f));
 
-	objMesh leftLeg("assets/models/cube.obj", glm::vec3(.5f, .37f, .2f), glm::vec3(.5f, .3f, 0.f), glm::vec3(.2f, 1.f, .2f));
-	objMesh rightLeg("assets/models/cube.obj", glm::vec3(.5f, .37f, .2f), glm::vec3(-.5f, .3f, 0.f), glm::vec3(.2f, 1.f, .2f));
-	objMesh leftFoot("assets/models/cube.obj", glm::vec3(0.f), glm::vec3(.5f, .1f, 0.f), glm::vec3(.35f, .1f, .35f));
-	objMesh rightFoot("assets/models/cube.obj", glm::vec3(0.f), glm::vec3(-.5f, .1f, 0.f), glm::vec3(.35f, .1f, .35f));
+	objMesh leftLeg("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(.5f, .3f, 0.f), glm::vec3(.2f, 1.f, .2f));
+	objMesh rightLeg("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(-.5f, .3f, 0.f), glm::vec3(.2f, 1.f, .2f));
+	objMesh leftFoot("assets/models/cube.ob", glm::vec3(0.f), glm::vec3(.5f, .1f, 0.f), glm::vec3(.35f, .1f, .35f));
+	objMesh rightFoot("assets/models/cube.ob", glm::vec3(0.f), glm::vec3(-.5f, .1f, 0.f), glm::vec3(.35f, .1f, .35f));
 
-	objMesh scarf("assets/models/cube.obj", glm::vec3(.81f, .55f, .18f), glm::vec3(0.f, 3.f, 0.f), glm::vec3(1.2f, .2f, 1.f), glm::vec3(0.f, 0.f, 10.f));
-	objMesh scarfBit("assets/models/cube.obj", glm::vec3(.81f, .55f, .18f), glm::vec3(1.f, 3.f, 0.f), glm::vec3(1.2f, .2f, .2f), glm::vec3(0.f, 0.f, 10.f));
+	objMesh scarf("assets/models/cube.ob", glm::vec3(.81f, .55f, .18f), glm::vec3(0.f, 3.f, 0.f), glm::vec3(1.2f, .2f, 1.f), glm::vec3(0.f, 0.f, 10.f));
+	objMesh scarfBit("assets/models/cube.ob", glm::vec3(.81f, .55f, .18f), glm::vec3(1.f, 3.f, 0.f), glm::vec3(1.2f, .2f, .2f), glm::vec3(0.f, 0.f, 10.f));
 
 	objModel olaf;
 	olaf.addMesh(&torso);
