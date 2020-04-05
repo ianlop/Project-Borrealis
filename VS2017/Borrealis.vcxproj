@@ -14,7 +14,6 @@
     <ProjectGuid>{FE2C9990-49B6-4227-9A9C-6B8FD1FFF62A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Labs</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -123,6 +122,12 @@
     <None Include="assets\shaders\shadowFrag.glsl" />
     <None Include="assets\shaders\shadowVert.glsl" />
     <None Include="assets\shaders\vertexShader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\carrot.jpg" />
+    <Image Include="assets\textures\color.png" />
+    <Image Include="assets\textures\metal.jpg" />
+    <Image Include="assets\textures\snow.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
