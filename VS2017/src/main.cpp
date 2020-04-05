@@ -13,7 +13,6 @@
 #define GLEW_STATIC 1
 #endif
 
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -90,69 +89,41 @@ int main() {
 		coloredVertex(glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 	};
 
-
+	
 	// Creating meshes
 	// creating line
 	Mesh _line(line, sizeof(line), glm::vec3(1.0f, 1.0f, 0.0f));
 
-	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
+	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(200.f, 1.f, 200.f));
 
 	//objMesh id("assets/models/sphere.obj", glm::vec3(1.f), glm::vec3(10.f, 1.1f, 10.f), glm::vec3(.1f));
-
-	objMesh torso("assets/models/sphere.ob", glm::vec3(.99f), glm::vec3(0.f, 2.1f, 0.f), glm::vec3(1.5f, 1.f, 1.f));
-	objMesh button1("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 2.6f, .9f), glm::vec3(.2f, .2f, .2f));
-	objMesh button2("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 2.1f, .9f), glm::vec3(.2f, .2f, .2f));
-	objMesh button3("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 1.6f, .9f), glm::vec3(.2f, .2f, .2f));
-
-	objMesh head("assets/models/sphere.ob", glm::vec3(1.f), glm::vec3(0.f, 3.6f, 0.f), glm::vec3(1.2f));
-	objMesh hat1("assets/models/cube.ob", glm::vec3(1.f), glm::vec3(0.f, 4.8f, 0.f), glm::vec3(1.f, .3f, 1.f));
-	objMesh hat2("assets/models/cube.ob", glm::vec3(1.f, .88f, .42f), glm::vec3(0.f, 5.8f, 0.f), glm::vec3(.7f, .5f, .7f));
-	objMesh hat3("assets/models/cube.ob", glm::vec3(1.f), glm::vec3(0.f, 6.8f, 0.f), glm::vec3(.25f, .7f, .25f));
-	objMesh eye("assets/models/cube.ob", glm::vec3(1.f), glm::vec3(0.f, 4.1f, 1.f), glm::vec3(.8f, .2f, .2f));
-
-	objMesh leftArm("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(2.8f, 2.1f, 0.f), glm::vec3(1.5f, .1f, .1f));
-	objMesh rightArm("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(-2.8f, 2.1f, 0.f), glm::vec3(1.5f, .1f, .1f));
-
-	objMesh leftLeg("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(.5f, .3f, 0.f), glm::vec3(.2f, 1.f, .2f));
-	objMesh rightLeg("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(-.5f, .3f, 0.f), glm::vec3(.2f, 1.f, .2f));
-	objMesh leftFoot("assets/models/cube.ob", glm::vec3(0.f), glm::vec3(.5f, .1f, 0.f), glm::vec3(.35f, .1f, .35f));
-	objMesh rightFoot("assets/models/cube.ob", glm::vec3(0.f), glm::vec3(-.5f, .1f, 0.f), glm::vec3(.35f, .1f, .35f));
-
-	objMesh scarf("assets/models/cube.ob", glm::vec3(.81f, .55f, .18f), glm::vec3(0.f, 3.f, 0.f), glm::vec3(1.2f, .2f, 1.f), glm::vec3(0.f, 0.f, 10.f));
-	objMesh scarfBit("assets/models/cube.ob", glm::vec3(.81f, .55f, .18f), glm::vec3(1.f, 3.f, 0.f), glm::vec3(1.2f, .2f, .2f), glm::vec3(0.f, 0.f, 10.f));
-
-	objModel olaf;
-	olaf.addMesh(&torso);
-	olaf.addMesh(&button1);
-	olaf.addMesh(&button2);
-	olaf.addMesh(&button3);
-	olaf.addMesh(&head);
-	olaf.addMesh(&hat1);
-	olaf.addMesh(&hat2);
-	olaf.addMesh(&hat3);
-	olaf.addMesh(&eye);
-	olaf.addMesh(&leftArm);
-	olaf.addMesh(&rightArm);
-	olaf.addMesh(&leftLeg);
-	olaf.addMesh(&leftFoot);
-	olaf.addMesh(&rightLeg);
-	olaf.addMesh(&rightFoot);
-	olaf.addMesh(&scarf);
-	olaf.addMesh(&scarfBit);
+	objMesh stop("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(0.f, 2.1f, 0.f), glm::vec3(1.5f, 1.f, 1.f));
+	objMesh curved("assets/models/StreetLamp1.obj", glm::vec3(.99f), glm::vec3(7.0f,0.0f, 0.0f), glm::vec3(0.75f, 0.95f, 0.75f));
+	objMesh tc("assets/models/trash_can.obj", glm::vec3(.99f), glm::vec3(2.6f, 0.0f, 0.0f), glm::vec3(4.75f, 4.75f, 4.75f));
+	objMesh bench("assets/models/bench.obj", glm::vec3(.99f), glm::vec3(3.6f, 0.0f, 5.0f), glm::vec3(0.3f, 0.3f, 0.3f));
+	
+	//a collection of all the curved street lights
+	std::vector<objMesh*> st_lights(50);
 
 	//Textures!!1
-
+	
 	Texture snow("assets/textures/snow.jpg", GL_TEXTURE_2D);
 	plane.setTexture(&snow);
-	Texture carrot("assets/textures/carrot.jpg", GL_TEXTURE_2D);
-	eye.setTexture(&carrot);
-	Texture metal("assets/textures/metal.jpg", GL_TEXTURE_2D);
-	hat1.setTexture(&metal);
-	hat2.setTexture(&metal);
-	hat3.setTexture(&metal);
+
+	Texture stop_text("assets/textures/stop.png", GL_TEXTURE_2D);
+	stop.setTexture(&stop_text);
 
 	Texture col("assets/textures/color.png", GL_TEXTURE_2D);
 
+	Texture black("assets/textures/metal.jpg", GL_TEXTURE_2D);
+	curved.setTexture(&black);
+	for (float i = 0.0; i < 50.0; i++) {
+		st_lights.push_back(new objMesh("assets/models/StreetLamp1.obj", glm::vec3(.99f), glm::vec3(7.0f, 0.0f, i), glm::vec3(0.75f, 0.95f, 0.75f)));
+	}
+	Texture green("assets/textures/green.jpg", GL_TEXTURE_2D);
+	tc.setTexture(&green);
+	Texture ww("assets/textures/whiteW.jpg", GL_TEXTURE_2D);
+	bench.setTexture(&ww);
 	//configuring depth map
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int depthMapFBO;
@@ -185,9 +156,7 @@ int main() {
 	//glm::vec3 lightPos = glm::vec3(-1.f, 4.f, -2.f);
 	glm::vec3 lightPos = glm::vec3(0.f, 20.f, -1.f);
 
-	hat1.setShiny(256.f);
-	hat3.setShiny(256.f);
-
+	stop.setShiny(256.f);
 
 	
 	// Setting up Camera with starting point
@@ -226,7 +195,6 @@ int main() {
 		glClearColor(0.11f, 0.44f, 0.68f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//first pass, render shadow map
@@ -248,9 +216,15 @@ int main() {
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		plane.draw(&depthShader);
-		olaf.draw(&depthShader);
+		stop.draw(&depthShader);
+		tc.draw(&depthShader);
+		
+		curved.draw(&depthShader);
+		bench.draw(&depthShader);
+		for (float i = 0.0; i < 50.0; i++) {
+			st_lights[i]->draw(&depthShader);
+		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 
 		//reset
 		glViewport(0, 0, WIDTH, HEIGHT);
@@ -286,40 +260,24 @@ int main() {
 		glLineWidth(1);
 		glPointSize(10);
 
-		
+		tc.draw(&sh);
 		plane.draw(&sh);
-		olaf.draw(&sh);
+		stop.draw(&sh);
+		curved.draw(&sh);
+		bench.draw(&sh);
 		//id.draw(&sh, GL_TRIANGLES);
-
-
+		for (float i = 0.0; i < 50.0; i++) {
+			st_lights[i]->draw(&sh);
+		}
 		// Rendering
 		glm::mat4 scalingMatrix;
 		glm::mat4 translationMatrix;
 		glm::mat4 worldMatrix;
 		glm::mat4 rotation;
-
 		// Coordinate Axis Lines
 		int scale = 5; // 5 Unit length
 		glLineWidth(5);
 
-		//X
-		scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale * 1.0f, 1.1f, 1.1f));
-		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(scale * 0.5f, 0.0f, 0.0f));
-		worldMatrix = translationMatrix * scalingMatrix;
-		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(1.0f, 0.0f, 0.0f));
-
-		//Y
-		rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, scale * 0.5f, 0.0f));
-		worldMatrix = translationMatrix * rotation * scalingMatrix;
-		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 1.0f, 0.0f));
-
-		//Z
-		rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, scale * 0.5f));
-		worldMatrix = translationMatrix * rotation * scalingMatrix;
-		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
-		/////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// Swap buffers
 		glfwSwapBuffers(win);
@@ -331,50 +289,12 @@ int main() {
 			// Escape to close window
 			glfwSetWindowShouldClose(win, true);
 		}
-		if (glfwGetKey(win, GLFW_KEY_L) == GLFW_PRESS) {
-			// Wireframe with GL_LINE_LOOP
-			olaf.changeType(GL_LINE_LOOP);
-		}
-		if (glfwGetKey(win, GLFW_KEY_T) == GLFW_PRESS) {
-			// Shape with GL_TRIANGLES
-			olaf.changeType(GL_TRIANGLES);
-		}
-		if (glfwGetKey(win, GLFW_KEY_P) == GLFW_PRESS) {
-			// Points with GL_POINTS
-			olaf.changeType(GL_POINTS);
-		}
 
-		
 
 		if (glfwGetKey(win, GLFW_KEY_HOME) == GLFW_PRESS) {
 			cam.reset();
 		}
 
-
-		if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS)
-		{
-			plane.setTexture(&snow);
-			eye.setTexture(&carrot);
-			hat1.setTexture(&metal);
-			hat2.setTexture(&metal);
-			hat3.setTexture(&metal);
-
-			eye.setColor(glm::vec3(1.f));
-			hat1.setColor(glm::vec3(1.f));
-			hat3.setColor(glm::vec3(1.f));
-		}
-		if (glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS)
-		{
-			plane.setTexture(&col);
-			eye.setTexture(&col);
-			hat1.setTexture(&col);
-			hat2.setTexture(&col);
-			hat3.setTexture(&col);
-
-			eye.setColor(glm::vec3(0.f));
-			hat1.setColor(glm::vec3(0.f));
-			hat3.setColor(glm::vec3(0.f));
-		}
 
 		if (glfwGetKey(win, GLFW_KEY_B) == GLFW_PRESS && !hasTurned)
 		{
