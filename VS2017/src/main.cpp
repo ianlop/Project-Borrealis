@@ -100,10 +100,10 @@ int main() {
 	objMesh stop("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(0.f, 2.1f, 0.f), glm::vec3(1.5f, 1.f, 1.f));
 	objMesh curved("assets/models/StreetLamp1.ob", glm::vec3(.99f), glm::vec3(7.0f,0.0f, 0.0f), glm::vec3(0.75f, 0.95f, 0.75f));
 	objMesh tc("assets/models/trash_can.ob", glm::vec3(.99f), glm::vec3(2.6f, 0.0f, 0.0f), glm::vec3(4.75f, 4.75f, 4.75f));
-	objMesh bench("assets/models/bench.ob", glm::vec3(.99f), glm::vec3(3.6f, 0.0f, 5.0f), glm::vec3(0.3f, 0.3f, 0.3f));
+	//objMesh bench("assets/models/bench.ob", glm::vec3(.99f), glm::vec3(3.6f, 0.0f, 5.0f), glm::vec3(0.3f, 0.3f, 0.3f));
 	
 	//a collection of all the curved street lights
-	std::vector<objMesh*> st_lights(50);
+	std::vector<objMesh*> st_lights;
 
 	//Textures!!1
 	
@@ -117,13 +117,14 @@ int main() {
 
 	Texture black("assets/textures/metal.jpg", GL_TEXTURE_2D);
 	curved.setTexture(&black);
-	/*for (float i = 0.0; i < 50.0; i++) {
-		st_lights.push_back(new objMesh("assets/models/StreetLamp1.ob", glm::vec3(.99f), glm::vec3(7.0f, 0.0f, i), glm::vec3(0.75f, 0.95f, 0.75f)));
-	}*/
+	for (float i = 0.0; i < 50.0; i++) {
+		st_lights.push_back(new objMesh("assets/models/StreetLamp1.ob", glm::vec3(1.f, 1.f, 1.f), glm::vec3(7.0f, 0.0f, i), glm::vec3(0.75f, 0.95f, 0.75f)));
+	}
 	Texture green("assets/textures/green.jpg", GL_TEXTURE_2D);
 	tc.setTexture(&green);
-	Texture ww("assets/textures/whiteW.jpg", GL_TEXTURE_2D);
-	bench.setTexture(&ww);
+	//Texture ww("assets/textures/whiteW.jpg", GL_TEXTURE_2D);
+	//bench.setTexture(&ww);
+
 	//configuring depth map
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int depthMapFBO;
@@ -220,7 +221,7 @@ int main() {
 		tc.draw(&depthShader);
 		
 		curved.draw(&depthShader);
-		bench.draw(&depthShader);
+		//bench.draw(&depthShader);
 		for (float i = 0.0; i < 50.0; i++) {
 			st_lights[i]->draw(&depthShader);
 		}
@@ -264,7 +265,7 @@ int main() {
 		plane.draw(&sh);
 		stop.draw(&sh);
 		curved.draw(&sh);
-		bench.draw(&sh);
+		//bench.draw(&sh);
 		//id.draw(&sh, GL_TRIANGLES);
 		for (float i = 0.0; i < 50.0; i++) {
 			st_lights[i]->draw(&sh);
