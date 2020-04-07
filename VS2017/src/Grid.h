@@ -9,6 +9,7 @@ class Grid
 public:
 	Grid();
 	Grid(int);
+	~Grid();
 
 	vector<double> getGridX();
 	vector<double> getGridZ();

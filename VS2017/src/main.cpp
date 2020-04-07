@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 #include "Shader.h"
 #include "Camera.h"
@@ -8,6 +9,7 @@
 #include "objMesh.h"
 #include "objModel.h"
 #include "Texture.h"
+#include "Grid.h"
 
 #ifndef GLEW_STATIC
 #define GLEW_STATIC 1
@@ -214,6 +216,12 @@ int main() {
 	float n = 1.f;
 	bool shadows = true;
 	bool hasTurned = false;
+
+	Grid* gr = new Grid();
+	vector<double> Xgrid = gr->getGridX();
+	vector<double> Zgrid = gr->getGridZ();
+
+	std::cout << Xgrid[24] <<" "<< Zgrid[24] <<std::endl;
 
 	while (!glfwWindowShouldClose(win))
 	{
