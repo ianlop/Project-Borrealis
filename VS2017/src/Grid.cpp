@@ -45,7 +45,7 @@ void Grid::makeGridZ(int n)
 	{
 		for (int j = 0; j < n; i++)
 		{
-			gridX.push_back((i - 3.0));
+			gridZ.push_back((i - 3.0));
 		}
 	}
 }
