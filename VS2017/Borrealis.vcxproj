@@ -99,6 +99,8 @@
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="skybox.cpp" />
+    <ClCompile Include="skybox_verticies.cpp" />
     <ClCompile Include="src\Shadow.cpp" />
     <ClCompile Include="src\objMesh.cpp" />
     <ClCompile Include="src\objModel.cpp" />
@@ -109,6 +111,7 @@
     <ClCompile Include="src\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="skybox.h" />
     <ClInclude Include="src\Shadow.h" />
     <ClInclude Include="src\objMesh.h" />
     <ClInclude Include="src\objModel.h" />
@@ -123,6 +126,16 @@
     <None Include="assets\shaders\shadowFrag.glsl" />
     <None Include="assets\shaders\shadowVert.glsl" />
     <None Include="assets\shaders\vertexShader.glsl" />
+    <None Include="skybox.fs" />
+    <None Include="skybox.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\skybox\back.png" />
+    <Image Include="assets\skybox\down.png" />
+    <Image Include="assets\skybox\front.png" />
+    <Image Include="assets\skybox\left.png" />
+    <Image Include="assets\skybox\right.png" />
+    <Image Include="assets\skybox\top.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

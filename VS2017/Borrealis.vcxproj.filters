@@ -47,6 +47,12 @@
     <ClCompile Include="src\Shadow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="skybox_verticies.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h">
@@ -63,6 +69,7 @@
     <ClInclude Include="src\objModel.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Shadow.h" />
+    <ClInclude Include="skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragShader.glsl">
@@ -73,5 +80,15 @@
     </None>
     <None Include="assets\shaders\shadowVert.glsl" />
     <None Include="assets\shaders\shadowFrag.glsl" />
+    <None Include="skybox.fs" />
+    <None Include="skybox.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\skybox\back.png" />
+    <Image Include="assets\skybox\down.png" />
+    <Image Include="assets\skybox\front.png" />
+    <Image Include="assets\skybox\left.png" />
+    <Image Include="assets\skybox\right.png" />
+    <Image Include="assets\skybox\top.png" />
   </ItemGroup>
 </Project>
