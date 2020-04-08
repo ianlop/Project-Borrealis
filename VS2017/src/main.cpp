@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 #include "Shader.h"
 #include "Camera.h"
@@ -8,6 +9,7 @@
 #include "objMesh.h"
 #include "objModel.h"
 #include "Texture.h"
+#include "Grid.h"
 
 #include "Heights.h"
 
@@ -91,7 +93,10 @@ int main() {
 		coloredVertex(glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 	};
 
-
+	Grid* gr = new Grid();
+	std::vector<float> Xgrid = gr->getGridX();
+	std::vector<float> Zgrid = gr->getGridZ();
+	std::vector<objMesh*> fuck;
 	// Creating meshes
 	// creating line
 	Mesh _line(line, sizeof(line), glm::vec3(1.0f, 1.0f, 0.0f));
@@ -113,6 +118,19 @@ int main() {
 	objMesh b(buildingOptions[buildingChoice], glm::vec3(1.f), glm::vec3(0.f), glm::vec3(.01f));
 
 	std::cout << "We picked building " << buildingChoice << std::endl;
+
+
+	auto buildings = gr->getBuildingPos();
+	for (auto i : buildings)
+	{
+		fuck.push_back(new objMesh("assets/models/sphere.ob", glm::vec3(0.f, 1.f, 1.f), glm::vec3(i.first * 15.f, 0.f, i.second * 15.f), glm::vec3(.5f)));
+	}
+	auto roads = gr->getRoadPos();
+	for (auto i : roads)
+	{
+		fuck.push_back(new objMesh("assets/models/sphere.ob", glm::vec3(1.f, 0.f, 0.f), glm::vec3(i.first * 15.f, 0.f, i.second * 15.f), glm::vec3(.5f)));
+	}
+
 
 	//Textures!!1
 
@@ -150,6 +168,7 @@ int main() {
 
 	//glm::vec3 lightPos = glm::vec3(0.f, 30.f, 0.f);
 	//glm::vec3 lightPos = glm::vec3(-1.f, 4.f, -2.f);
+
 	glm::vec3 lightPos = glm::vec3(0.f, 10.f, -1.f);
 
 
@@ -179,6 +198,10 @@ int main() {
 	float n = 1.f;
 	bool shadows = true;
 	bool hasTurned = false;
+
+	
+
+	//std::cout << Xgrid[24] <<" "<< Zgrid[24] <<std::endl;
 
 	while (!glfwWindowShouldClose(win))
 	{
@@ -212,9 +235,12 @@ int main() {
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		plane.draw(&depthShader);
+
 		b.draw(&depthShader);
 
 
+
+		//olaf.draw(&depthShader);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -255,6 +281,10 @@ int main() {
 		plane.draw(&sh);
 		b.draw(&sh);
 
+		//olaf.draw(&sh);
+		//id.draw(&sh);
+		for (auto i : fuck)
+			i->draw(&sh);
 
 		// Rendering
 		glm::mat4 scalingMatrix;
@@ -294,9 +324,11 @@ int main() {
 			// Escape to close window
 			glfwSetWindowShouldClose(win, true);
 		}
+
 		if (glfwGetKey(win, GLFW_KEY_HOME) == GLFW_PRESS) {
 			cam.reset();
 		}
+
 
 		glUseProgram(0);
 	}
