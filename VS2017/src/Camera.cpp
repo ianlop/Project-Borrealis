@@ -21,7 +21,7 @@ Camera::Camera(glm::vec3* Eye, glm::vec3* Center, glm::vec3* Up, float* _speed, 
 		// projection matrix to have camera in perspective
 		projectionMatrix = glm::perspective(glm::radians(fov),  // field of view in degrees
 			1280.0f / 720.0f,      // aspect ratio
-			0.01f, 200.0f);       // near and far (near > 0)
+			0.01f, 500.0f);       // near and far (near > 0)
 	}
 	else 
 	{
@@ -95,6 +95,10 @@ void Camera::processMovement(GLFWwindow* win, float deltaTime)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
 		pitch = -89.0f;
+
+
+	//collision detection
+
 
 }
 

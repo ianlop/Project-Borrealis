@@ -11,6 +11,9 @@
 #include "Texture.h"
 #include "Grid.h"
 
+#include <stdlib.h>
+#include <time.h>
+
 #include "Heights.h"
 
 #ifndef GLEW_STATIC
@@ -58,7 +61,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Creating GLFW window
-	GLFWwindow* win = glfwCreateWindow(WIDTH, HEIGHT, "COMP371 - Assignment 1", NULL, NULL);
+	GLFWwindow* win = glfwCreateWindow(WIDTH, HEIGHT, "COMP371 - Project", NULL, NULL);
 	if (win == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -112,22 +115,19 @@ int main() {
 
 	std::vector<objMesh*> renderObjects;
 
-	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
+	objMesh plane("assets/models/plane.ob", glm::vec3(1.f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
 
-	//int buildingChoice = rand() % 6;
-	//objMesh b(buildingOptions[buildingChoice], glm::vec3(1.f), glm::vec3(0.f), glm::vec3(.01f));
-
-	//std::cout << "We picked building " << buildingChoice << std::endl;
-
-
+	int seed = 0;
 	auto buildings = gr->getBuildingPos();
 	for (auto i : buildings)
 	{
+		srand(seed);
 		int buildingChoice = rand() % 6;
 		float size = randomizeHeight(.1f, .3f);
-		fuck.push_back(new objMesh(buildingOptions[buildingChoice], glm::vec3(0.f, 1.f, 1.f), glm::vec3(i.first * 15.f, 0.f, i.second * 15.f), glm::vec3(.07f, size, .07f)));
-		//fuck.push_back(new objMesh("assets/models/sphere.ob", glm::vec3(0.f, 1.f, 1.f), glm::vec3(i.first * 15.f, 0.f, i.second * 15.f), glm::vec3(.5f)));
-
+		//std::cout << buildingChoice << std::endl;
+		//std::cout << size << std::endl;
+		fuck.push_back(new objMesh(buildingOptions[buildingChoice], glm::vec3(1.f, 1.f, 1.f), glm::vec3(i.first * 15.f, 0.f, i.second * 15.f), glm::vec3(.07f, size, .07f)));
+		seed++;
 	}
 	auto roads = gr->getRoadPos();
 	for (auto i : roads)
@@ -139,7 +139,8 @@ int main() {
 	//Textures!!1
 
 	Texture snow("assets/textures/snow.jpg", GL_TEXTURE_2D);
-	plane.setTexture(&snow);
+	Texture asphalt("assets/textures/asphalt.jpg", GL_TEXTURE_2D);
+	plane.setTexture(&asphalt);
 
 
 	//configuring depth map
