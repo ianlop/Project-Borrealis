@@ -94,13 +94,22 @@ int main() {
 	Grid* gr = new Grid();
 	vector<float> Xgrid = gr->getGridX();
 	vector<float> Zgrid = gr->getGridZ();
+	vector<objMesh*> fuck;
 	// Creating meshes
 	// creating line
 	Mesh _line(line, sizeof(line), glm::vec3(1.0f, 1.0f, 0.0f));
 
 	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
 
-	objMesh id("assets/models/sphere.obj", glm::vec3(1.f), glm::vec3(Xgrid[32], 1.1f, Zgrid[32]), glm::vec3(.1f));
+	objMesh id("assets/models/sphere.obj", glm::vec3(1.f), glm::vec3(Xgrid[0]*10.f, 0.f, Zgrid[0] * 10.f), glm::vec3(.1f));
+	for (auto i = 0; i < 49; i++)
+	{
+		//for (auto j = 0; j <; j++)
+		//{
+		fuck.push_back(new objMesh("assets/models/sphere.obj", glm::vec3(1.f), glm::vec3(Xgrid[i] * 15.f, 0.f, Zgrid[i] * 15.f), glm::vec3(.1f)));
+		
+		
+	}
 
 	objMesh torso("assets/models/sphere.ob", glm::vec3(.99f), glm::vec3(0.f, 2.1f, 0.f), glm::vec3(1.5f, 1.f, 1.f));
 	objMesh button1("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 2.6f, .9f), glm::vec3(.2f, .2f, .2f));
@@ -154,7 +163,7 @@ int main() {
 	hat2.setTexture(&metal);
 	hat3.setTexture(&metal);
 
-	Texture col("assets/textures/color.png", GL_TEXTURE_2D);
+	//Texture col("assets/textures/color.png", GL_TEXTURE_2D);
 
 	//configuring depth map
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -255,7 +264,7 @@ int main() {
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		plane.draw(&depthShader);
-		olaf.draw(&depthShader);
+		//olaf.draw(&depthShader);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -296,8 +305,9 @@ int main() {
 		
 		plane.draw(&sh);
 		//olaf.draw(&sh);
-		id.draw(&sh);
-
+		//id.draw(&sh);
+		for (auto i : fuck)
+			i->draw(&sh);
 
 		// Rendering
 		glm::mat4 scalingMatrix;
@@ -358,30 +368,7 @@ int main() {
 		}
 
 
-		if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS)
-		{
-			plane.setTexture(&snow);
-			eye.setTexture(&carrot);
-			hat1.setTexture(&metal);
-			hat2.setTexture(&metal);
-			hat3.setTexture(&metal);
 
-			eye.setColor(glm::vec3(1.f));
-			hat1.setColor(glm::vec3(1.f));
-			hat3.setColor(glm::vec3(1.f));
-		}
-		if (glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS)
-		{
-			plane.setTexture(&col);
-			eye.setTexture(&col);
-			hat1.setTexture(&col);
-			hat2.setTexture(&col);
-			hat3.setTexture(&col);
-
-			eye.setColor(glm::vec3(0.f));
-			hat1.setColor(glm::vec3(0.f));
-			hat3.setColor(glm::vec3(0.f));
-		}
 
 		if (glfwGetKey(win, GLFW_KEY_B) == GLFW_PRESS && !hasTurned)
 		{

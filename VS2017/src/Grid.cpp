@@ -46,7 +46,7 @@ void Grid::makeGridX(int n)
 		for (int j=0; j<n; j++)
 		{
 			gridX.push_back((j-d));
-			std::cout << (j - d) << std::endl;
+			//std::cout << (j - d) << std::endl;
 		}
 	}
 }
@@ -61,7 +61,7 @@ void Grid::makeGridZ(int n)
 		for (int j = 0; j < n; j++)
 		{
 			gridZ.push_back((i - d));
-			std::cout << (i - d) << std::endl;
+			//std::cout << (i - d) << std::endl;
 		}
 	}
 }
