@@ -39,7 +39,6 @@ static bool glError(const char* funct, const char* file, int line) {
 	return true;
 
 }
-float rand_FloatRange(float a, float b);
 
 Camera cam;
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -63,7 +62,7 @@ int main() {
 		return -1;
 	}
 	glfwMakeContextCurrent(win);
-	
+
 	// VSYNC - Sync framerate with screen refresh rate - 60Hz
 	glfwSwapInterval(1);
 
@@ -88,20 +87,22 @@ int main() {
 		coloredVertex(glm::vec3(-0.5f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		coloredVertex(glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 	};
-	
+
 	// Creating meshes
 	// creating line
 	Mesh _line(line, sizeof(line), glm::vec3(1.0f, 1.0f, 0.0f));
 	//plane
 	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
 
+
+	////////////////////IAN DRAWINGS/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
 	std::uniform_real_distribution<> dis(-45.0, 45.0);
 
 	//cars
-	objMesh lexus("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(dis(gen), -0.05f, -1.0), glm::vec3(0.4f/12, 0.4f/12, 0.4f/12));
-	objMesh lexus2("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(-10.0f/12, -0.05f, dis(gen)), glm::vec3(0.4f/12, 0.4f/12, 0.4f/12));
+	objMesh lexus("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(dis(gen), -0.05f, -1.0), glm::vec3(0.4f / 12, 0.4f / 12, 0.4f / 12));
+	objMesh lexus2("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(-10.0f / 12, -0.05f, dis(gen)), glm::vec3(0.4f / 12, 0.4f / 12, 0.4f / 12));
 	objMesh lexus3("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(dis(gen), -0.05f, 1.0), glm::vec3(0.4f / 12, 0.4f / 12, 0.4f / 12));
 	objMesh lexus4("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(10.0f / 12, -0.05f, dis(gen)), glm::vec3(0.4f / 12, 0.4f / 12, 0.4f / 12));
 	objMesh lexus5("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(dis(gen), -0.05f, -1.0), glm::vec3(0.4f / 12, 0.4f / 12, 0.4f / 12));
@@ -114,7 +115,7 @@ int main() {
 	lexus2.rotate(0.0, 90.0, 0.0);
 	lexus3.setColor(glm::vec3(dis2(gen), dis2(gen), dis2(gen)));
 	lexus3.rotate(0.0, 180.0, 0.0);
-	lexus4.setColor(glm::vec3(dis2(gen), dis2(gen), dis2(gen)));	
+	lexus4.setColor(glm::vec3(dis2(gen), dis2(gen), dis2(gen)));
 	lexus4.rotate(0.0, -90.0, 0.0);
 	lexus5.setColor(glm::vec3(dis2(gen), dis2(gen), dis2(gen)));
 	lexus6.setColor(glm::vec3(dis2(gen), dis2(gen), dis2(gen)));
@@ -124,23 +125,24 @@ int main() {
 	lexus8.setColor(glm::vec3(dis2(gen), dis2(gen), dis2(gen)));
 	lexus8.rotate(0.0, -90.0, 0.0);
 
-
 	//stops signs in each corner of crossed street
-	objMesh stop("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(22.f/12, 2.1f/12, -15.f/12), glm::vec3(1.5f/12, 1.f/12, 1.f/12));
-	objMesh stop2("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(16.f/12, 2.1f/12, 15.f/12), glm::vec3(1.5f/12, 1.f/12, 1.f/12));
-	objMesh stop3("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(-16.f/12, 2.1f/12, 15.f/12), glm::vec3(1.5f/12, 1.f/12, 1.f/12));
-	objMesh stop4("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(-15.f/12, 2.1f/12, -22.f/12), glm::vec3(1.5f/12, 1.f/12, 1.f/12));
+	objMesh stop("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(22.f / 12, 2.1f / 12, -15.f / 12), glm::vec3(1.5f / 12, 1.f / 12, 1.f / 12));
+	objMesh stop2("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(16.f / 12, 2.1f / 12, 15.f / 12), glm::vec3(1.5f / 12, 1.f / 12, 1.f / 12));
+	objMesh stop3("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(-16.f / 12, 2.1f / 12, 15.f / 12), glm::vec3(1.5f / 12, 1.f / 12, 1.f / 12));
+	objMesh stop4("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(-15.f / 12, 2.1f / 12, -22.f / 12), glm::vec3(1.5f / 12, 1.f / 12, 1.f / 12));
 	stop2.rotate(0.0, -90.0, 0.0);
 	stop3.rotate(0.0, -180.0, 0.0);
 	stop4.rotate(0.0, 90.0, 0.0);
+
+	//benches
+	std::vector<objMesh*> bus_stop;
+	std::vector<objMesh*> bus_stop2;
 
 	//trash cans
 	std::vector<objMesh*> tcs;
 	std::vector<objMesh*> tcs2;
 	std::vector<objMesh*> tcs3;
 	std::vector<objMesh*> tcs4;
-
-	//benches
 
 	//a collection of all the curved street lights
 	std::vector<objMesh*> st_lights;//y rhs positive
@@ -149,9 +151,9 @@ int main() {
 	std::vector<objMesh*> st_lights4;//y lhs negative
 
 	//Textures!!1
-	
+
 	Texture dark("assets/textures/snow.jpg", GL_TEXTURE_2D);
-	
+
 
 	Texture stop_text("assets/textures/stop.png", GL_TEXTURE_2D);
 	stop.setTexture(&stop_text);
@@ -167,20 +169,17 @@ int main() {
 	plane.setTexture(&concrete);
 
 	Texture green("assets/textures/green.jpg", GL_TEXTURE_2D);
-
-	Texture ww("assets/textures/whiteW.jpg", GL_TEXTURE_2D);
-//	bench.setTexture(&ww);
 	
 	//setting up street lights in cross like manner
 	float adder = -50;
 	//adding in the trash cans
 	for (float i = 0.0; i < 26.0; i++) {
 
-		st_lights.push_back(new objMesh("assets/models/StreetLamp1.ob", glm::vec3(.9), glm::vec3(2.0, 0.0f, adder), glm::vec3(0.75f/12, 0.95f/12, 0.75f/12)));
+		st_lights.push_back(new objMesh("assets/models/StreetLamp1.ob", glm::vec3(.9), glm::vec3(2.0, 0.0f, adder), glm::vec3(0.75f / 12, 0.95f / 12, 0.75f / 12)));
 		st_lights[i]->rotate(0, 180, 0);
 		st_lights[i]->setTexture(&black);
 
-		st_lights3.push_back(new objMesh("assets/models/StreetLamp1.ob", glm::vec3(.9), glm::vec3(-2.0f, 0.0f, adder), glm::vec3(0.75f/12, 0.95f/12, 0.75f/12)));
+		st_lights3.push_back(new objMesh("assets/models/StreetLamp1.ob", glm::vec3(.9), glm::vec3(-2.0f, 0.0f, adder), glm::vec3(0.75f / 12, 0.95f / 12, 0.75f / 12)));
 		st_lights3[i]->rotate(0, 360, 0);
 		st_lights3[i]->setTexture(&black);
 
@@ -188,29 +187,51 @@ int main() {
 		st_lights2[i]->rotate(0, 90, 0);
 		st_lights2[i]->setTexture(&black);
 
-		st_lights4.push_back(new objMesh("assets/models/StreetLamp1.ob", glm::vec3(.9), glm::vec3(adder, 0.0f,-2.0f), glm::vec3(0.75f / 12, 0.95f / 12, 0.75f / 12)));
+		st_lights4.push_back(new objMesh("assets/models/StreetLamp1.ob", glm::vec3(.9), glm::vec3(adder, 0.0f, -2.0f), glm::vec3(0.75f / 12, 0.95f / 12, 0.75f / 12)));
 		st_lights4[i]->rotate(0, 270, 0);
 		st_lights4[i]->setTexture(&black);
 
-		tcs.push_back(new objMesh("assets/models/trash_can.ob", glm::vec3(.99f), glm::vec3(2.05f, 0.0f, adder), glm::vec3(4.75f/12, 4.75f/12, 4.75f/12)));
+		tcs.push_back(new objMesh("assets/models/trash_can.ob", glm::vec3(.99f), glm::vec3(2.05f, 0.0f, adder + 1), glm::vec3(4.75f / 12, 4.75f / 12, 4.75f / 12)));
 		tcs[i]->rotate(0, 360, 0);
 		tcs[i]->setTexture(&green);
 
-		tcs2.push_back(new objMesh("assets/models/trash_can.ob", glm::vec3(.99f), glm::vec3(-2.05f, 0.0f, adder), glm::vec3(4.75f/12, 4.75f/12, 4.75f/12)));
+		tcs2.push_back(new objMesh("assets/models/trash_can.ob", glm::vec3(.99f), glm::vec3(-2.05f, 0.0f, adder + 1), glm::vec3(4.75f / 12, 4.75f / 12, 4.75f / 12)));
 		tcs2[i]->rotate(0, 360, 0);
 		tcs2[i]->setTexture(&green);
-		
-		tcs3.push_back(new objMesh("assets/models/trash_can.ob", glm::vec3(.99f), glm::vec3(adder-0.25, 0.0f, 3.8), glm::vec3(4.75f/12, 4.75f/12, 4.75f/12)));
+
+		tcs3.push_back(new objMesh("assets/models/trash_can.ob", glm::vec3(.99f), glm::vec3(adder - 0.25, 0.0f, 3.8), glm::vec3(4.75f / 12, 4.75f / 12, 4.75f / 12)));
 		tcs3[i]->rotate(0, 360, 0);
 		tcs3[i]->setTexture(&green);
 
-		tcs4.push_back(new objMesh("assets/models/trash_can.ob", glm::vec3(.99f), glm::vec3(adder-0.25, 0.0f, -1.8), glm::vec3(4.75f/12, 4.75f/12, 4.75f/12)));
+		tcs4.push_back(new objMesh("assets/models/trash_can.ob", glm::vec3(.99f), glm::vec3(adder - 0.25, 0.0f, -1.8), glm::vec3(4.75f / 12, 4.75f / 12, 4.75f / 12)));
 		tcs4[i]->rotate(0, 360, 0);
 		tcs4[i]->setTexture(&green);
-		
+
 		adder += 4.0;
 	}
+	//adding bus stops
+	adder = -50.0;
+	for (int i = 0; i < 6; ++i) {
+		adder += 15;
+		if (i % 2 == 0) {
+			bus_stop.push_back(new objMesh("assets/models/bench.ob", glm::vec3(.99f), glm::vec3(2.5, 0.0, adder-4.5), glm::vec3(0.015, 0.015, 0.015)));
+			bus_stop2.push_back(new objMesh("assets/models/bench.ob", glm::vec3(.99f), glm::vec3(adder, 0.0,3.25), glm::vec3(0.015, 0.015, 0.015)));
+			bus_stop[i]->rotate(0.0, 90.0, 0.0);
+			bus_stop2[i]->rotate(0.0, 360.0, 0.0);
+			bus_stop[i]->setColor(glm::vec3(0.59, 0.72, 0.99));
+			bus_stop2[i]->setColor(glm::vec3(0.59, 0.72, 0.99));
+		}
+		else {
+			bus_stop.push_back(new objMesh("assets/models/bench.ob", glm::vec3(.99f), glm::vec3(-2.5, 0.0, adder-4.5), glm::vec3(0.015, 0.015, 0.015)));
+			bus_stop2.push_back(new objMesh("assets/models/bench.ob", glm::vec3(.99f), glm::vec3(adder, 0.0, -3.25), glm::vec3(0.015, 0.015, 0.015)));
+			bus_stop[i]->rotate(0.0, -90.0, 0.0);
+			bus_stop2[i]->rotate(0.0, 180.0, 0.0);
+			bus_stop[i]->setColor(glm::vec3(0.59, 0.72, 0.99));
+			bus_stop2[i]->setColor(glm::vec3(0.59, 0.72, 0.99));
+		}
+	}
 
+	////////////////////IAN DRAWINGS//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//configuring depth map
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -241,9 +262,6 @@ int main() {
 
 	glm::vec3 lightPos = glm::vec3(0.f, 20.f, -1.f);
 
-	stop.setShiny(256.f);
-	lexus2.setShiny(100.0);
-	
 	// Setting up Camera with starting point
 	float spd = 1.0f;
 	
@@ -299,12 +317,15 @@ int main() {
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
+		//plane
 		plane.draw(&depthShader);
-		
+		////////////////////IAN DRAWINGS///////////////////////////
+		//stop signs
 		stop.draw(&depthShader);
 		stop2.draw(&depthShader);
 		stop3.draw(&depthShader);
 		stop4.draw(&depthShader);
+
 		//cars
 		lexus.draw(&depthShader);
 		lexus2.draw(&depthShader);
@@ -314,6 +335,7 @@ int main() {
 		lexus6.draw(&depthShader);
 		lexus7.draw(&depthShader);
 		lexus8.draw(&depthShader);
+
 		for (float i = 0.0; i < 26.0; i++) {
 			tcs[i]->draw(&depthShader);
 			tcs2[i]->draw(&depthShader);
@@ -323,9 +345,13 @@ int main() {
 			st_lights2[i]->draw(&depthShader);
 			st_lights3[i]->draw(&depthShader);
 			st_lights4[i]->draw(&depthShader);
-
 		}
-
+		//bus stops
+		for (int i = 0; i < 6; i++) {
+			bus_stop[i]->draw(&depthShader);
+			bus_stop2[i]->draw(&depthShader);
+		}
+		////////////////////IAN DRAWINGS///////////////////////////
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		//reset
@@ -362,7 +388,7 @@ int main() {
 		glLineWidth(1);
 		glPointSize(10);
 
-
+		////////////////////IAN DRAWINGS///////////////////////////
 		plane.draw(&sh);
 
 		stop.draw(&sh);
@@ -389,8 +415,12 @@ int main() {
 			st_lights4[i]->draw(&sh);
 
 		}
-		//id.draw(&sh, GL_TRIANGLES);
-		//st lights
+
+		for (int i = 0; i < 6; i++) {
+			bus_stop[i]->draw(&sh);
+			bus_stop2[i]->draw(&sh);
+		}
+		////////////////////IAN DRAWINGS///////////////////////////
 
 		// Rendering
 		glm::mat4 scalingMatrix;
@@ -442,10 +472,6 @@ int main() {
 	return 0;
 }
 
-
-float rand_FloatRange(float a, float b) {
-	return ((b - a) * ((float)rand() / RAND_MAX)) + a;
-}
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
