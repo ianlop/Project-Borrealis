@@ -26,14 +26,44 @@ Grid::~Grid()
 	gridZ.clear();
 }
 
-vector<float> Grid::getGridX()
+
+std::vector<std::pair<int, int>> Grid::getBuildingPos()
 {
-	return gridX;
+	std::vector<std::pair<int, int>> result;
+	int center = (int) (size / 2);
+
+	for (int row = 0; row < size; row++)
+	{
+		for (int col = 0; col < size; col++)
+		{
+			if (row == center || col == center)
+				continue;
+			int index = row * size + col;
+			result.push_back(std::pair<int, int>(gridX[index], gridZ[index]));
+		}
+	}
+
+	return result;
 }
 
-vector<float> Grid::getGridZ()
+std::vector<std::pair<int, int>> Grid::getRoadPos()
 {
-	return gridZ;
+	std::vector<std::pair<int, int>> result;
+	int center = (int)(size / 2);
+
+	for (int row = 0; row < size; row++)
+	{
+		for (int col = 0; col < size; col++)
+		{
+			if (row == center || col == center)
+			{
+				int index = row * size + col;
+				result.push_back(std::pair<int, int>(gridX[index], gridZ[index]));
+			}
+		}
+	}
+
+	return result;
 }
 
 void Grid::makeGridX(int n)
