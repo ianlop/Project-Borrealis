@@ -63,6 +63,7 @@
     <ClInclude Include="src\objModel.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Shadow.h" />
+    <ClInclude Include="src\Heights.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragShader.glsl">

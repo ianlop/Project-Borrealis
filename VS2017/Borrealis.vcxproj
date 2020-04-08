@@ -109,6 +109,7 @@
     <ClCompile Include="src\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Heights.h" />
     <ClInclude Include="src\Shadow.h" />
     <ClInclude Include="src\objMesh.h" />
     <ClInclude Include="src\objModel.h" />
