@@ -49,8 +49,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 int main() {
 
 	unsigned int WIDTH = 1024, HEIGHT = 768;
-	//PerlinNoise perlin;
-	int xxx = 0;
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -98,9 +96,23 @@ int main() {
 	// creating line
 	Mesh _line(line, sizeof(line), glm::vec3(1.0f, 1.0f, 0.0f));
 
-	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
-	objMesh b1("assets/models/b1.ob", glm::vec3(1.f), glm::vec3(0.f), glm::vec3(.01f));
+	std::string buildingOptions[6] = {
+		"assets/models/b1.ob",
+		"assets/models/b2.ob",
+		"assets/models/b3.ob",
+		"assets/models/b4.ob",
+		"assets/models/b5.ob",
+		"assets/models/b6.ob"
+	};
 
+	std::vector<objMesh*> renderObjects;
+
+	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
+
+	int buildingChoice = rand() % 6;
+	objMesh b(buildingOptions[buildingChoice], glm::vec3(1.f), glm::vec3(0.f), glm::vec3(.01f));
+
+	std::cout << "We picked building " << buildingChoice << std::endl;
 
 	//Textures!!1
 
@@ -200,7 +212,7 @@ int main() {
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		plane.draw(&depthShader);
-		b1.draw(&depthShader);
+		b.draw(&depthShader);
 
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -241,8 +253,7 @@ int main() {
 
 		
 		plane.draw(&sh);
-		b1.draw(&sh);
-		//id.draw(&sh, GL_TRIANGLES);
+		b.draw(&sh);
 
 
 		// Rendering
@@ -283,16 +294,11 @@ int main() {
 			// Escape to close window
 			glfwSetWindowShouldClose(win, true);
 		}
-		
-
 		if (glfwGetKey(win, GLFW_KEY_HOME) == GLFW_PRESS) {
 			cam.reset();
 		}
 
-
 		glUseProgram(0);
-		std::cout << static_cast <float> (rand()) / static_cast <float> (RAND_MAX) << std::endl;
-		xxx++;
 	}
 
 	// Cleanup
