@@ -266,7 +266,7 @@ int main() {
 		 1.0f, -1.0f,  1.0f
 	};
 
-	Shader skyboxShader("skybox.vs", "skybox.fs");
+	Shader skyboxShader("assets/shaders/skybox.vs", "assets/shaders/skybox.fs");
 
 
 
@@ -283,12 +283,12 @@ int main() {
 	// skybox - 6 faces
 	std::vector<std::string> faces
 	{
-		"right.png",
-		"left.png",
-		"top.png",
-		"bottom.png",
-		"front.png",
-		"back.png"
+		"assets/skybox/right.png",
+		"assets/skybox/left.png",
+		"assets/skybox/top.png",
+		"assets/skybox/down.png",
+		"assets/skybox/front.png",
+		"assets/skybox/back.png"
 	};
 
 	unsigned int cubemapTexture = loadCubemap(faces);
@@ -406,7 +406,7 @@ int main() {
 		// draw skybox as last
 		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 		skyboxShader.use();
-		lightView = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
+		lightView = glm::mat4(glm::mat3(cam.GetViewMatrix())); // remove translation from the view matrix
 		skyboxShader.setMat4("view", lightView);
 		skyboxShader.setMat4("projection", lightProjection);
 		// skybox cube

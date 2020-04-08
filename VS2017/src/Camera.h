@@ -35,6 +35,7 @@ public:
 	void reset();
 
 	void zoom(double amount);
+	inline glm::mat4 GetViewMatrix() const { return viewMatrix; }
 
 private:
 	float* speed;
