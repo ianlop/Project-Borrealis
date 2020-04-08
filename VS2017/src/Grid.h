@@ -11,14 +11,14 @@ public:
 	Grid(int);
 	~Grid();
 
-	vector<double> getGridX();
-	vector<double> getGridZ();
+	vector<float> getGridX();
+	vector<float> getGridZ();
 
 
 private:
 	int size;
-	vector<double> gridX;
-	vector<double> gridZ;
+	vector<float> gridX;
+	vector<float> gridZ;
 	void makeGridX(int);
 	void makeGridZ(int);
 };

@@ -91,14 +91,16 @@ int main() {
 		coloredVertex(glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 	};
 
-
+	Grid* gr = new Grid();
+	vector<float> Xgrid = gr->getGridX();
+	vector<float> Zgrid = gr->getGridZ();
 	// Creating meshes
 	// creating line
 	Mesh _line(line, sizeof(line), glm::vec3(1.0f, 1.0f, 0.0f));
 
 	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
 
-	//objMesh id("assets/models/sphere.obj", glm::vec3(1.f), glm::vec3(10.f, 1.1f, 10.f), glm::vec3(.1f));
+	objMesh id("assets/models/sphere.obj", glm::vec3(1.f), glm::vec3(Xgrid[32], 1.1f, Zgrid[32]), glm::vec3(.1f));
 
 	objMesh torso("assets/models/sphere.ob", glm::vec3(.99f), glm::vec3(0.f, 2.1f, 0.f), glm::vec3(1.5f, 1.f, 1.f));
 	objMesh button1("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 2.6f, .9f), glm::vec3(.2f, .2f, .2f));
@@ -217,9 +219,7 @@ int main() {
 	bool shadows = true;
 	bool hasTurned = false;
 
-	Grid* gr = new Grid();
-	vector<double> Xgrid = gr->getGridX();
-	vector<double> Zgrid = gr->getGridZ();
+	
 
 	std::cout << Xgrid[24] <<" "<< Zgrid[24] <<std::endl;
 
@@ -295,8 +295,8 @@ int main() {
 
 		
 		plane.draw(&sh);
-		olaf.draw(&sh);
-		//id.draw(&sh, GL_TRIANGLES);
+		//olaf.draw(&sh);
+		id.draw(&sh);
 
 
 		// Rendering
