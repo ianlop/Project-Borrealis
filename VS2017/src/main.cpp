@@ -134,6 +134,19 @@ int main() {
 	stop3.rotate(0.0, -180.0, 0.0);
 	stop4.rotate(0.0, 90.0, 0.0);
 
+	//cones
+	objMesh cone("assets/models/cone.ob", glm::vec3(.99f), glm::vec3(4.0, 0.0, -2.0), glm::vec3(0.10, 0.10f, 0.10));
+	cone.setColor(glm::vec3(1.0,0.52,0.10));
+
+	objMesh cone2("assets/models/cone.ob", glm::vec3(.99f), glm::vec3(3.0, 0.0, -2.0), glm::vec3(0.10, 0.10f, 0.10));
+	cone2.setColor(glm::vec3(1.0, 0.52, 0.10));
+
+	objMesh cone3("assets/models/cone.ob", glm::vec3(.99f), glm::vec3(-4.0, 0.0, 2.0), glm::vec3(0.10, 0.10f, 0.10));
+	cone3.setColor(glm::vec3(1.0, 0.52, 0.10));
+
+	objMesh cone4("assets/models/cone.ob", glm::vec3(.99f), glm::vec3(-3.0, 0.0, 2.0), glm::vec3(0.10, 0.10f, 0.10));
+	cone4.setColor(glm::vec3(1.0, 0.52, 0.10));
+
 	//benches
 	std::vector<objMesh*> bus_stop;
 	std::vector<objMesh*> bus_stop2;
@@ -151,9 +164,7 @@ int main() {
 	std::vector<objMesh*> st_lights4;//y lhs negative
 
 	//Textures!!1
-
 	Texture dark("assets/textures/snow.jpg", GL_TEXTURE_2D);
-
 
 	Texture stop_text("assets/textures/stop.png", GL_TEXTURE_2D);
 	stop.setTexture(&stop_text);
@@ -172,6 +183,7 @@ int main() {
 	
 	//setting up street lights in cross like manner
 	float adder = -50;
+
 	//adding in the trash cans
 	for (float i = 0.0; i < 26.0; i++) {
 
@@ -209,6 +221,7 @@ int main() {
 
 		adder += 4.0;
 	}
+
 	//adding bus stops
 	adder = -50.0;
 	for (int i = 0; i < 6; ++i) {
@@ -336,6 +349,13 @@ int main() {
 		lexus7.draw(&depthShader);
 		lexus8.draw(&depthShader);
 
+		//cone
+		cone.draw(&depthShader);
+		cone2.draw(&depthShader);
+		cone3.draw(&depthShader);
+		cone4.draw(&depthShader);
+
+		//trash cans and st lights
 		for (float i = 0.0; i < 26.0; i++) {
 			tcs[i]->draw(&depthShader);
 			tcs2[i]->draw(&depthShader);
@@ -390,6 +410,11 @@ int main() {
 
 		////////////////////IAN DRAWINGS///////////////////////////
 		plane.draw(&sh);
+
+		cone.draw(&sh);
+		cone2.draw(&sh);
+		cone3.draw(&sh);
+		cone4.draw(&sh);
 
 		stop.draw(&sh);
 		stop2.draw(&sh);
