@@ -7,8 +7,9 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "SOIL2.h"
 
-
+#include <vector>
 #include "stb_image.h"
 
 
@@ -29,5 +30,6 @@ public:
 
 	void Bind();
 	void Unbind();
+	static GLuint LoadSkybox(std::vector<const GLchar*> faces);
 };
 
