@@ -350,16 +350,6 @@ int main() {
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 
 		//drawing
-
-		// Drawing Skybox
-		//glDepthFunc(GL_LEQUAL);
-		//shSkybox.use();
-		//glm::mat4 view = glm::mat4(glm::mat3(cam.updateView(shSkybox, win, dt))); // was just view before
-
-		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-
 		//Drawing snowman at origin
 		glLineWidth(1);
 		glPointSize(10);
@@ -398,7 +388,13 @@ int main() {
 		worldMatrix = translationMatrix * rotation * scalingMatrix;
 		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
 
-		
+		// Drawing Skybox
+		//glDepthFunc(GL_LEQUAL);
+		//shSkybox.use();
+		//glm::mat4 view = glm::mat4(glm::mat3(cam.updateView(shSkybox, win, dt))); // was just view before
+
+		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
 		glBindVertexArray(skyboxVAO);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
