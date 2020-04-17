@@ -27,7 +27,7 @@ private:
 	void loadObj(const char* path);
 
 	Texture* texture = nullptr;
-	
+
 	std::vector<glm::vec3> out_vertices;
 	std::vector<glm::vec3> out_normals;
 	std::vector<glm::vec2> out_uvs;
@@ -48,7 +48,9 @@ private:
 
 	glm::vec3 position;
 	glm::vec3 rotation;
+	glm::vec3 defaultRot;
 	glm::vec3 scale;
+	glm::vec3 pivot;
 
 	glm::mat4 part;
 	glm::mat4 worldMatrix;
@@ -58,7 +60,7 @@ private:
 
 public:
 	objMesh(
-		string path, 
+		string path,
 		glm::vec3 _color = glm::vec3(1.f),
 		glm::vec3 _position = glm::vec3(0.f),
 		glm::vec3 _scale = glm::vec3(1.f),
@@ -70,7 +72,7 @@ public:
 	void updatePartMatrix();
 	void applyGroup(glm::mat4 groupMatrix);
 	void draw(Shader* sh, glm::mat4 groupMatrix = glm::mat4(1.f));
-	
+
 	void setTexture(Texture* _text);
 
 	void setColor(glm::vec3 _color) { color = _color; };
@@ -78,5 +80,9 @@ public:
 	void setShiny(float _shininess) { shininess = _shininess; };
 
 	void changeType(unsigned int _type);
+
+	void rotate(float x, float y, float z, glm::vec3 _pivot = glm::vec3(0.f));
+	void poistion(float x, float y, float z);
+	void resetRotation();
 };
 
