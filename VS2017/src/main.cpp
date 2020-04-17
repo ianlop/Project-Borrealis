@@ -99,7 +99,7 @@ int main() {
 	Grid* gr = new Grid();
 	std::vector<float> Xgrid = gr->getGridX();
 	std::vector<float> Zgrid = gr->getGridZ();
-	std::vector<objMesh*> fuck;
+	std::vector<objMesh*> modelsList;
 	// Creating meshes
 	// creating line
 	Mesh _line(line, sizeof(line), glm::vec3(1.0f, 1.0f, 0.0f));
@@ -123,17 +123,17 @@ int main() {
 	{
 		srand(seed);
 		int buildingChoice = rand() % 6;
-		float size = randomizeHeight(.1f, .3f);
+		float size = randomizeHeight(.05f, .2f);
 		//std::cout << buildingChoice << std::endl;
 		//std::cout << size << std::endl;
-		fuck.push_back(new objMesh(buildingOptions[buildingChoice], glm::vec3(1.f, 1.f, 1.f), glm::vec3(i.first * 15.f, 0.f, i.second * 15.f), glm::vec3(.07f, size, .07f)));
+		modelsList.push_back(new objMesh(buildingOptions[buildingChoice], glm::vec3(1.f, 1.f, 1.f), glm::vec3(i.first * 10.f, 0.f, i.second * 10.f), glm::vec3(.05f, size, .05f)));
 		seed++;
 	}
-	auto roads = gr->getRoadPos();
-	for (auto i : roads)
-	{
-		fuck.push_back(new objMesh("assets/models/sphere.ob", glm::vec3(1.f, 0.f, 0.f), glm::vec3(i.first * 15.f, 0.f, i.second * 15.f), glm::vec3(.5f)));
-	}
+	//auto roads = gr->getRoadPos();
+	//for (auto i : roads)
+	//{
+	//	modelsList.push_back(new objMesh("assets/models/sphere.ob", glm::vec3(1.f, 0.f, 0.f), glm::vec3(i.first * 15.f, 0.f, i.second * 15.f), glm::vec3(.5f)));
+	//}
 
 
 	//Textures!!1
@@ -171,6 +171,14 @@ int main() {
 	lexus7.rotate(0.0, 180.0, 0.0);
 	lexus8.setColor(glm::vec3(dis2(gen), dis2(gen), dis2(gen)));
 	lexus8.rotate(0.0, -90.0, 0.0);
+	modelsList.push_back(&lexus);
+	modelsList.push_back(&lexus2);
+	modelsList.push_back(&lexus3);
+	modelsList.push_back(&lexus4);
+	modelsList.push_back(&lexus5);
+	modelsList.push_back(&lexus6);
+	modelsList.push_back(&lexus7);
+	modelsList.push_back(&lexus8);
 
 	//stops signs in each corner of crossed street
 	objMesh stop("assets/models/StopSign.ob", glm::vec3(.99f), glm::vec3(22.f / 12, 2.1f / 12, -15.f / 12), glm::vec3(1.5f / 12, 1.f / 12, 1.f / 12));
@@ -180,6 +188,10 @@ int main() {
 	stop2.rotate(0.0, -90.0, 0.0);
 	stop3.rotate(0.0, -180.0, 0.0);
 	stop4.rotate(0.0, 90.0, 0.0);
+	modelsList.push_back(&stop);
+	modelsList.push_back(&stop2);
+	modelsList.push_back(&stop3);
+	modelsList.push_back(&stop4);
 
 	//benches
 	std::vector<objMesh*> bus_stop;
@@ -212,8 +224,8 @@ int main() {
 
 	Texture black("assets/textures/metal.jpg", GL_TEXTURE_2D);
 
-	Texture concrete("assets/textures/concrete.jpg", GL_TEXTURE_2D);
-	plane.setTexture(&concrete);
+	//Texture concrete("assets/textures/concrete.jpg", GL_TEXTURE_2D);
+	//plane.setTexture(&concrete);
 
 	Texture green("assets/textures/green.jpg", GL_TEXTURE_2D);
 	
@@ -373,7 +385,7 @@ int main() {
 		//plane
 		plane.draw(&depthShader);
 
-		for (auto i : fuck)
+		for (auto i : modelsList)
 			i->draw(&depthShader);
 
 		//b.draw(&depthShader);
@@ -381,20 +393,20 @@ int main() {
 
 		////////////////////IAN DRAWINGS///////////////////////////
 		//stop signs
-		stop.draw(&depthShader);
-		stop2.draw(&depthShader);
-		stop3.draw(&depthShader);
-		stop4.draw(&depthShader);
+		//stop.draw(&depthShader);
+		//stop2.draw(&depthShader);
+		//stop3.draw(&depthShader);
+		//stop4.draw(&depthShader);
 
 		//cars
-		lexus.draw(&depthShader);
-		lexus2.draw(&depthShader);
-		lexus3.draw(&depthShader);
-		lexus4.draw(&depthShader);
-		lexus5.draw(&depthShader);
-		lexus6.draw(&depthShader);
-		lexus7.draw(&depthShader);
-		lexus8.draw(&depthShader);
+		//lexus.draw(&depthShader);
+		//lexus2.draw(&depthShader);
+		//lexus3.draw(&depthShader);
+		//lexus4.draw(&depthShader);
+		//lexus5.draw(&depthShader);
+		//lexus6.draw(&depthShader);
+		//lexus7.draw(&depthShader);
+		//lexus8.draw(&depthShader);
 
 		for (float i = 0.0; i < 26.0; i++) {
 			tcs[i]->draw(&depthShader);
@@ -453,22 +465,22 @@ int main() {
 		//b.draw(&sh);
 
 		//id.draw(&sh);
-		for (auto i : fuck)
+		for (auto i : modelsList)
 			i->draw(&sh);
 
-		stop.draw(&sh);
-		stop2.draw(&sh);
-		stop3.draw(&sh);
-		stop4.draw(&sh);
+		//stop.draw(&sh);
+		//stop2.draw(&sh);
+		//stop3.draw(&sh);
+		//stop4.draw(&sh);
 		
-		lexus.draw(&sh);
-		lexus2.draw(&sh);
-		lexus3.draw(&sh);
-		lexus4.draw(&sh);
-		lexus5.draw(&sh);
-		lexus6.draw(&sh);
-		lexus7.draw(&sh);
-		lexus8.draw(&sh);
+		//lexus.draw(&sh);
+		//lexus2.draw(&sh);
+		//lexus3.draw(&sh);
+		//lexus4.draw(&sh);
+		//lexus5.draw(&sh);
+		//lexus6.draw(&sh);
+		//lexus7.draw(&sh);
+		//lexus8.draw(&sh);
 		for (float i = 0.0; i < 26.0; i++) {
 			tcs[i]->draw(&sh);
 			tcs2[i]->draw(&sh);
