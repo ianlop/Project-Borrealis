@@ -50,6 +50,74 @@ static bool glError(const char* funct, const char* file, int line) {
 Camera cam;
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
+unsigned int loadCubemap(std::vector<std::string> faces)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+	int width, height, nrChannels;
+	for (unsigned int i = 0; i < faces.size(); i++)
+	{
+		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+			);
+			stbi_image_free(data);
+		}
+		else
+		{
+			std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+			stbi_image_free(data);
+		}
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	return textureID;
+}
+
+unsigned int loadTexture(std::string path)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+
+	int width, height, nrComponents;
+	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrComponents, 0);
+	if (data)
+	{
+		GLenum format;
+		if (nrComponents == 1)
+			format = GL_RED;
+		else if (nrComponents == 3)
+			format = GL_RGB;
+		else if (nrComponents == 4)
+			format = GL_RGBA;
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		stbi_image_free(data);
+	}
+	else
+	{
+		std::cout << "Texture failed to load at path: " << path << std::endl;
+		stbi_image_free(data);
+	}
+
+	return textureID;
+}
 
 int main() {
 
@@ -88,6 +156,81 @@ int main() {
 	// Shader Creation
 	Shader sh("assets/shaders/vertexShader.glsl", "assets/shaders/fragShader.glsl");
 	Shader depthShader("assets/shaders/shadowVert.glsl", "assets/shaders/shadowFrag.glsl");
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	Shader shSkybox("assets/shaders/skyboxVertex.glsl", "assets/shaders/skyboxFragment.glsl");
+
+	float skyboxVertices[] = {
+	// positions          
+	-1.0f,  1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+
+	-1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+
+	-1.0f, -1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+
+	-1.0f,  1.0f, -1.0f,
+	 1.0f,  1.0f, -1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f, -1.0f,
+
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	 1.0f, -1.0f,  1.0f
+};
+
+	// skybox VAO
+	unsigned int skyboxVAO, skyboxVBO;
+	glGenVertexArrays(1, &skyboxVAO);
+	glGenBuffers(1, &skyboxVBO);
+	glBindVertexArray(skyboxVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	// Skybox Textures
+	std::vector<std::string> faces{
+		"assets/textures/skybox_images/right.png",
+		"assets/textures/skybox_images/left.png",
+		"assets/textures/skybox_images/top.png",
+		"assets/textures/skybox_images/down.png",
+		"assets/textures/skybox_images/back.png",
+		"assets/textures/skybox_images/front.png"
+	};
+
+	unsigned int cubemapText = loadCubemap(faces);
+	shSkybox.use();
+	shSkybox.setInt("skybox", 0);
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Arrays for the shapes used in rendering
 	coloredVertex line[] = {
@@ -140,7 +283,7 @@ int main() {
 
 	Texture snow("assets/textures/snow.jpg", GL_TEXTURE_2D);
 	Texture asphalt("assets/textures/asphalt.jpg", GL_TEXTURE_2D);
-	//Texture col("assets/textures/color.png", GL_TEXTURE_2D);
+	Texture col("assets/textures/color.png", GL_TEXTURE_2D);
 	plane.setTexture(&asphalt);
 	//plane.setTexture(&col);
 
@@ -294,6 +437,7 @@ int main() {
 
 	////////////////////IAN DRAWINGS//////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 	//configuring depth map
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int depthMapFBO;
@@ -322,8 +466,7 @@ int main() {
 	sh.setInt("shadowMap", 1);
 
 
-	glm::vec3 lightPos = glm::vec3(0.f, 10.f, -1.f);
-
+	glm::vec3 lightPos = glm::vec3(0.f, 20.f, -1.f);
 
 	// Setting up Camera with starting point
 	float spd = 1.0f;
@@ -364,9 +507,6 @@ int main() {
 	bool shadows = true;
 	bool hasTurned = false;
 
-	
-
-	//std::cout << Xgrid[24] <<" "<< Zgrid[24] <<std::endl;
 
 	while (!glfwWindowShouldClose(win))
 	{
@@ -402,10 +542,14 @@ int main() {
 		//plane
 		plane.draw(&depthShader);
 
+
 		for (auto i : modelsList)
 			i->draw(&depthShader);
 
 		//b.draw(&depthShader);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 
 
 		////////////////////IAN DRAWINGS///////////////////////////
@@ -435,6 +579,8 @@ int main() {
 
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////
+
+		
 		//second pass, render scene
 		glViewport(0, 0, WIDTH, HEIGHT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -456,7 +602,6 @@ int main() {
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
-
 
 
 		////////////////////IAN DRAWINGS///////////////////////////
@@ -487,7 +632,27 @@ int main() {
 		////////////////////IAN DRAWINGS///////////////////////////
 
 
-		// Swap buffers
+
+		///////////////////////////////////////////////////////// Drawing Skybox
+
+		// draw skybox as last
+		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+		shSkybox.use();
+		glm::mat4 view = glm::mat4(glm::mat3(cam.GetViewMatrix())); // remove translation from the view matrix
+		glm::mat4 projection = cam.GetProjectionMatrix();
+		shSkybox.setMat4("view", view);
+		shSkybox.setMat4("projection", projection);
+		// skybox cube
+		glBindVertexArray(skyboxVAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapText);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+		glDepthFunc(GL_LESS); // set depth function back to default
+
+
+		///////////////////////////////////////////////////////////
+
 		glfwSwapBuffers(win);
 		// Check/call events
 		glfwPollEvents();
@@ -496,7 +661,6 @@ int main() {
 			// Escape to close window
 			glfwSetWindowShouldClose(win, true);
 		}
-
 
 		if (glfwGetKey(win, GLFW_KEY_HOME) == GLFW_PRESS) {
 			cam.reset();

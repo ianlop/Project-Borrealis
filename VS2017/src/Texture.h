@@ -8,7 +8,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-
+#include <vector>
 #include "stb_image.h"
 
 
@@ -25,9 +25,11 @@ private:
 
 public:
 	Texture(std::string file, unsigned int _type);
-	~Texture();
+	virtual ~Texture();
 
 	void Bind();
 	void Unbind();
+
+	//static GLuint LoadSkybox(std::vector<const GLchar*> faces);
 };
 
