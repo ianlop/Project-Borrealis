@@ -396,11 +396,11 @@ int main() {
 		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-		glBindVertexArray(skyboxVAO);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
-		glDepthFunc(GL_LESS);
+		//glBindVertexArray(skyboxVAO);
+		//glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glBindVertexArray(0);
+		//glDepthFunc(GL_LESS);
 
 		glfwSwapBuffers(win);
 		// Check/call events
