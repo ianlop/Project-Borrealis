@@ -81,7 +81,63 @@ int main() {
 	// Shader Creation
 	Shader sh("assets/shaders/vertexShader.glsl", "assets/shaders/fragShader.glsl");
 	Shader depthShader("assets/shaders/shadowVert.glsl", "assets/shaders/shadowFrag.glsl");
+	Shader shSkybox("assets/shaders/skyboxVertex.glsl", "assets/shaders/skyboxFragment.glsl");
 
+	GLfloat skyboxVertices[] = {
+		
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f
+	};
+
+	// VAO for skybox
+	GLuint skyboxVAO, skyboxVBO;
+	glGenVertexArrays(1, &skyboxVAO);
+	glGenBuffers(1, &skyboxVBO);
+	glBindVertexArray(skyboxVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
+	glBindVertexArray(0);
 
 	// Arrays for the shapes used in rendering
 	coloredVertex line[] = {
@@ -152,6 +208,17 @@ int main() {
 
 	Texture col("assets/textures/color.png", GL_TEXTURE_2D);
 
+	// Skybox Textures
+	std::vector<const GLchar*> faces;
+	faces.push_back("assets/textures/skybox_images/right.png");
+	faces.push_back("assets/textures/skybox_images/left.png");
+	faces.push_back("assets/textures/skybox_images/top.png");
+	faces.push_back("assets/textures/skybox_images/down.png");
+	faces.push_back("assets/textures/skybox_images/back.png");
+	faces.push_back("assets/textures/skybox_images/front.png");
+
+	GLuint skyboxTexture = Texture::LoadSkybox(faces);
+
 	//configuring depth map
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int depthMapFBO;
@@ -214,6 +281,8 @@ int main() {
 	float n = 1.f;
 	bool shadows = true;
 	bool hasTurned = false;
+
+	//glm::mat4 projection = glm::perspective(cam.GetZoom(), (float)WIDTH / (float)HEIGHT, 0.1f, 1000.0f);
 
 	while (!glfwWindowShouldClose(win))
 	{
@@ -318,9 +387,21 @@ int main() {
 		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, scale * 0.5f));
 		worldMatrix = translationMatrix * rotation * scalingMatrix;
 		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
-		/////////////////////////////////////////////////////////////////////////////////////////////////
 
-		// Swap buffers
+		// Drawing Skybox
+		//glDepthFunc(GL_LEQUAL);
+		//shSkybox.use();
+		//glm::mat4 view = glm::mat4(glm::mat3(cam.updateView(shSkybox, win, dt))); // was just view before
+
+		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+		glBindVertexArray(skyboxVAO);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+		glDepthFunc(GL_LESS);
+
 		glfwSwapBuffers(win);
 		// Check/call events
 		glfwPollEvents();
