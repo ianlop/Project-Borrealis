@@ -72,9 +72,12 @@ static GLuint LoadSkybox(std::vector<const GLchar*> faces)
 
 	for (GLuint i = 0; i < faces.size(); i++)
 	{
-		image = SOIL_load_image(faces[i], &width, &height, 0, SOIL_LOAD_RGB);
+		// with soil: (to remove, just backup, in case conversions to stb throws error): image = SOIL_load_image(faces[i], &width, &height, 0, SOIL_LOAD_RGB);
+		image = stbi_load(faces[i], &width, &height, 0, STBI_rgb);
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-		SOIL_free_image_data(image);
+		
+		// with soil: (to remove, just backup, in case conversions to stb throws error): SOIL_free_image_data(image);
+		stbi_image_free(image);
 	}
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
