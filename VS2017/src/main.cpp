@@ -27,26 +27,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <random>
 
-
-//For error checking for error checking
-#define ASSERT(x) if (!(x)) __debugbreak();
-#define GLCall(x) GlClearError();\
-	x;\
-	ASSERT(glError(#x, __FILE__, __LINE__))
-
-static void GlClearError() {
-	while (glGetError() != 0);
-}
-
-static bool glError(const char* funct, const char* file, int line) {
-	while (GLenum err = glGetError()) {
-		std::cout << "[OpenGL Error]: " << err << funct << " " << file << " : " << line << ";" << std::endl;
-		return false;
-	}
-	return true;
-
-}
-
 Camera cam;
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
@@ -78,43 +58,6 @@ unsigned int loadCubemap(std::vector<std::string> faces)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-	return textureID;
-}
-
-unsigned int loadTexture(std::string path)
-{
-	unsigned int textureID;
-	glGenTextures(1, &textureID);
-
-	int width, height, nrComponents;
-	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrComponents, 0);
-	if (data)
-	{
-		GLenum format;
-		if (nrComponents == 1)
-			format = GL_RED;
-		else if (nrComponents == 3)
-			format = GL_RGB;
-		else if (nrComponents == 4)
-			format = GL_RGBA;
-
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		stbi_image_free(data);
-	}
-	else
-	{
-		std::cout << "Texture failed to load at path: " << path << std::endl;
-		stbi_image_free(data);
-	}
 
 	return textureID;
 }
@@ -271,33 +214,22 @@ int main() {
 	for (auto i : buildings)
 	{
 		srand(seed);
-		//int buildingChoice = buil(gen);
 		int buildingChoice = rand() % 6;
 		float size = randomizeHeight(.05f, .2f);
-		//std::cout << buildingChoice << std::endl;
-		//std::cout << size << std::endl;
+
 		modelsList.push_back(new objMesh(buildingOptions[buildingChoice], glm::vec3(1.f, 1.f, 1.f), glm::vec3(i.first * 10.f, 0.f, i.second * 10.f), glm::vec3(.05f, size, .05f)));
 		seed += rand();
 	}
-	//auto roads = gr->getRoadPos();
-	//for (auto i : roads)
-	//{
-	//	modelsList.push_back(new objMesh("assets/models/sphere.ob", glm::vec3(1.f, 0.f, 0.f), glm::vec3(i.first * 15.f, 0.f, i.second * 15.f), glm::vec3(.5f)));
-	//}
+
 
 
 	//Textures!!1
 
-	Texture snow("assets/textures/snow.jpg", GL_TEXTURE_2D);
 	Texture asphalt("assets/textures/asphalt.jpg", GL_TEXTURE_2D);
 	Texture col("assets/textures/color.png", GL_TEXTURE_2D);
 	plane.setTexture(&asphalt);
-	//plane.setTexture(&col);
 
-	////////////////////IAN DRAWINGS/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//std::random_device rd;  //Will be used to obtain a seed for the random number engine
-	//std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-	//std::uniform_real_distribution<> dis(-45.0, 45.0);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//cars
 	objMesh lexus("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(dis(gen), -0.05f, -1.0), glm::vec3(0.4f / 12, 0.4f / 12, 0.4f / 12));
@@ -363,7 +295,6 @@ int main() {
 
 	//Textures!!1
 
-	Texture dark("assets/textures/snow.jpg", GL_TEXTURE_2D);
 
 
 	Texture stop_text("assets/textures/stop.png", GL_TEXTURE_2D);
@@ -375,10 +306,6 @@ int main() {
 
 
 	Texture black("assets/textures/metal.jpg", GL_TEXTURE_2D);
-
-	//Texture concrete("assets/textures/concrete.jpg", GL_TEXTURE_2D);
-	//plane.setTexture(&concrete);
-
 	Texture green("assets/textures/green.jpg", GL_TEXTURE_2D);
 	
 	//setting up street lights in cross like manner
@@ -442,10 +369,10 @@ int main() {
 		}
 	}
 
-	////////////////////IAN DRAWINGS//////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	//configuring depth map
+	//configuring depth map for Shadows
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int depthMapFBO;
 	glGenFramebuffers(1, &depthMapFBO);
@@ -479,7 +406,6 @@ int main() {
 	float spd = 1.0f;
 	
 	glm::vec3 Eye = glm::vec3(0.0f, 25.0f, 10.0f);
-	//glm::vec3 Eye = lightPos;
 	glm::vec3 Center = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -508,12 +434,6 @@ int main() {
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-
-	bool hasRandomized = false;
-	float n = 1.f;
-	bool shadows = true;
-	bool hasTurned = false;
-
 
 	while (!glfwWindowShouldClose(win))
 	{
@@ -552,14 +472,9 @@ int main() {
 
 		for (auto i : modelsList)
 			i->draw(&depthShader);
-
-		//b.draw(&depthShader);
-
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-
-
-		////////////////////IAN DRAWINGS///////////////////////////
+		///////////////////////////////////////////////
 		
 		for (float i = 0.0; i < 26.0; i++) {
 			tcs[i]->draw(&depthShader);
@@ -576,7 +491,7 @@ int main() {
 			bus_stop[i]->draw(&depthShader);
 			bus_stop2[i]->draw(&depthShader);
 		}
-		////////////////////IAN DRAWINGS///////////////////////////
+		///////////////////////////////////////////////
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -605,17 +520,15 @@ int main() {
 		sh.setVec3("light.position", lightPos);
 		sh.setVec3("light.intensities", 1.f, 1.f, 1.f);
 		sh.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-		sh.setBool("shadows", shadows);
+		sh.setBool("shadows", true);
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 
 
-		////////////////////IAN DRAWINGS///////////////////////////
+		///////////////////////////////////////////////
 		plane.draw(&sh);
-		//b.draw(&sh);
 
-		//id.draw(&sh);
 		for (auto i : modelsList)
 			i->draw(&sh);
 
@@ -636,14 +549,14 @@ int main() {
 			bus_stop[i]->draw(&sh);
 			bus_stop2[i]->draw(&sh);
 		}
-		////////////////////IAN DRAWINGS///////////////////////////
+		///////////////////////////////////////////////
 
 
 
-		///////////////////////////////////////////////////////// Drawing Skybox
+		///////////////////////////////////////////////////////// Drawing Skybox based on LearnOpenGL Cubemap Tutorial
 
 		// draw skybox as last
-		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+		glDepthFunc(GL_LEQUAL); 
 		shSkybox.use();
 		glm::mat4 view = glm::mat4(glm::mat3(cam.GetViewMatrix())); // remove translation from the view matrix
 		glm::mat4 projection = cam.GetProjectionMatrix();
@@ -655,7 +568,7 @@ int main() {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapText);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
-		glDepthFunc(GL_LESS); // set depth function back to default
+		glDepthFunc(GL_LESS);
 
 
 		///////////////////////////////////////////////////////////
