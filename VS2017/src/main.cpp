@@ -336,18 +336,19 @@ int main() {
 
 	cam = Camera(&Eye, &Center, &Up, &spd, PERSPECTIVE, win);
 
+	
 	//north facing walls
-	cam.addWall(1, {glm::vec3(3.73f, 0.f, 3.19f), glm::vec3(0.f, 0.f, -1.f)});
-	cam.addWall(1, {glm::vec3(-4.22f, 0.f, 4.35f), glm::vec3(0.f, 0.f, -1.f)});
+	cam.addWall(1, {glm::vec3(4.f, 0.f, 4.f), glm::vec3(0.f, 0.f, -1.f)});
+	cam.addWall(1, {glm::vec3(-4.f, 0.f, 4.f), glm::vec3(0.f, 0.f, -1.f)});
 	//south facing walls
-	cam.addWall(2, {glm::vec3(-5.29f, 0.f, -5.01f), glm::vec3(0.f, 0.f, 1.f)});
-	cam.addWall(2, {glm::vec3(6.23f, 0.f, -4.86f), glm::vec3(0.f, 0.f, 1.f)});
+	cam.addWall(2, {glm::vec3(-4.f, 0.f, -4.f), glm::vec3(0.f, 0.f, 1.f)});
+	cam.addWall(2, {glm::vec3(4.f, 0.f, -4.f), glm::vec3(0.f, 0.f, 1.f)});
 	//east facing walls
-	cam.addWall(3, {glm::vec3(-4.22f, 0.f, 4.35f), glm::vec3(1.f, 0.f, 0.f)});
-	cam.addWall(3, {glm::vec3(-5.29f, 0.f, -5.01f), glm::vec3(1.f, 0.f, 0.f)});
+	cam.addWall(3, {glm::vec3(-4.f, 0.f, 4.f), glm::vec3(1.f, 0.f, 0.f)});
+	cam.addWall(3, {glm::vec3(-4.f, 0.f, -4.f), glm::vec3(1.f, 0.f, 0.f)});
 	//west facing walls
-	cam.addWall(4, {glm::vec3(3.73f, 0.f, 3.19f), glm::vec3(-1.f, 0.f, 0.f)});
-	cam.addWall(4, {glm::vec3(6.23f, 0.f, -4.86f), glm::vec3(-1.f, 0.f, 0.f)});
+	cam.addWall(4, {glm::vec3(4.f, 0.f, 4.f), glm::vec3(-1.f, 0.f, 0.f)});
+	cam.addWall(4, {glm::vec3(4.f, 0.f, -4.f), glm::vec3(-1.f, 0.f, 0.f)});
 
 
 	float lastFrameTime = glfwGetTime();
@@ -488,34 +489,34 @@ int main() {
 		}
 		////////////////////IAN DRAWINGS///////////////////////////
 
-		// Rendering
-		glm::mat4 scalingMatrix;
-		glm::mat4 translationMatrix;
-		glm::mat4 worldMatrix;
-		glm::mat4 rotation;
-		// Coordinate Axis Lines
-		int scale = 5; // 5 Unit length
-		glLineWidth(5);
+		//// Rendering Axis Lines
+		//glm::mat4 scalingMatrix;
+		//glm::mat4 translationMatrix;
+		//glm::mat4 worldMatrix;
+		//glm::mat4 rotation;
+		//// Coordinate Axis Lines
+		//int scale = 5; // 5 Unit length
+		//glLineWidth(5);
 
 
-		//X
-		scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale * 1.0f, 1.1f, 1.1f));
-		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(scale * 0.5f, 0.0f, 0.0f));
-		worldMatrix = translationMatrix * scalingMatrix;
-		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(1.0f, 0.0f, 0.0f));
+		////X
+		//scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale * 1.0f, 1.1f, 1.1f));
+		//translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(scale * 0.5f, 0.0f, 0.0f));
+		//worldMatrix = translationMatrix * scalingMatrix;
+		//_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(1.0f, 0.0f, 0.0f));
 
-		//Y
-		rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, scale * 0.5f, 0.0f));
-		worldMatrix = translationMatrix * rotation * scalingMatrix;
-		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 1.0f, 0.0f));
+		////Y
+		//rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		//translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, scale * 0.5f, 0.0f));
+		//worldMatrix = translationMatrix * rotation * scalingMatrix;
+		//_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 1.0f, 0.0f));
 
-		//Z
-		rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, scale * 0.5f));
-		worldMatrix = translationMatrix * rotation * scalingMatrix;
-		//_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
-		/////////////////////////////////////////////////////////////////////////////////////////////////
+		////Z
+		//rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, scale * 0.5f));
+		//worldMatrix = translationMatrix * rotation * scalingMatrix;
+		////_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 		glLineWidth(1);
