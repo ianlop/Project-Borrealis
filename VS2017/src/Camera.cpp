@@ -91,8 +91,8 @@ void Camera::processMovement(GLFWwindow* win, float deltaTime)
 	if (checkCollision(glm::vec3(0.f), glm::vec3(0.f, 1.f, 0.f)))
 		camEye->y = 1.f;
 
-	std::cout << checkCollision(glm::vec3(0.f), glm::vec3(0.f, 1.f, 0.f)) << std::endl;
-	std::cout << camEye->y << std::endl;
+	//std::cout << checkCollision(glm::vec3(0.f), glm::vec3(0.f, 1.f, 0.f)) << std::endl;
+	//std::cout << camEye->y << std::endl;
 
 	yaw += dx;
 	pitch += dy;
@@ -132,6 +132,24 @@ void Camera::updateView(Shader sh, GLFWwindow* win, float deltaTime) {
 	);
 
 	sh.setMat4("viewMatrix", viewMatrix);
+
+	
+	if (checkCollision(camSouthWalls[0].first, camSouthWalls[0].second, 0) && checkCollision(camEastWalls[1].first, camEastWalls[1].second, 0))
+		std::cout << "North West Corner Breached" << std::endl;
+
+	if (checkCollision(camSouthWalls[1].first, camSouthWalls[1].second, 0) && checkCollision(camWestWalls[1].first, camWestWalls[1].second, 0))
+		std::cout << "North East Corner Breached" << std::endl;
+
+	if (checkCollision(camNorthWalls[1].first, camNorthWalls[1].second, 0) && checkCollision(camEastWalls[0].first, camEastWalls[0].second, 0))
+		std::cout << "South West Corner Breached" << std::endl;
+
+	if (checkCollision(camNorthWalls[0].first, camNorthWalls[0].second, 0) && checkCollision(camWestWalls[1].first, camWestWalls[1].second, 0))
+		std::cout << "South East Corner Breached" << std::endl;
+
+	//std::cout << "CamX pos: " << camEye->x << std::endl;
+	//std::cout << "CamY pos: " << camEye->y << std::endl;
+	//std::cout << "CamZ pos: " << camEye->z << std::endl;
+	system("cls");
 }
 
 void Camera::reset() {
@@ -147,11 +165,11 @@ void Camera::zoom(double amount)
 	fov += amount;
 }
 
-bool Camera::checkCollision(glm::vec3 pos, glm::vec3 norm)
+bool Camera::checkCollision(glm::vec3 pos, glm::vec3 norm, float range)
 {
 	//printf("\nThe to pos vector: %d\n", (*camEye - pos).y);
 	//printf("The normal vector: %d\n", norm);
 	//printf("The Dot Product: %d\n\n", glm::dot(norm, *camEye - pos));
 
-	return glm::dot(norm, *camEye - pos) < 1;
+	return glm::dot(norm, *camEye - pos) < range;
 }

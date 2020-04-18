@@ -140,7 +140,9 @@ int main() {
 
 	Texture snow("assets/textures/snow.jpg", GL_TEXTURE_2D);
 	Texture asphalt("assets/textures/asphalt.jpg", GL_TEXTURE_2D);
+	Texture col("assets/textures/color.png", GL_TEXTURE_2D);
 	plane.setTexture(&asphalt);
+	plane.setTexture(&col);
 
 	////////////////////IAN DRAWINGS/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -334,6 +336,20 @@ int main() {
 
 	cam = Camera(&Eye, &Center, &Up, &spd, PERSPECTIVE, win);
 
+	//north facing walls
+	cam.addWall(1, {glm::vec3(3.73f, 0.f, 3.19f), glm::vec3(0.f, 0.f, -1.f)});
+	cam.addWall(1, {glm::vec3(-4.22f, 0.f, 4.35f), glm::vec3(0.f, 0.f, -1.f)});
+	//south facing walls
+	cam.addWall(2, {glm::vec3(-5.29f, 0.f, -5.01f), glm::vec3(0.f, 0.f, 1.f)});
+	cam.addWall(2, {glm::vec3(6.23f, 0.f, -4.86f), glm::vec3(0.f, 0.f, 1.f)});
+	//east facing walls
+	cam.addWall(3, {glm::vec3(-4.22f, 0.f, 4.35f), glm::vec3(1.f, 0.f, 0.f)});
+	cam.addWall(3, {glm::vec3(-5.29f, 0.f, -5.01f), glm::vec3(1.f, 0.f, 0.f)});
+	//west facing walls
+	cam.addWall(4, {glm::vec3(3.73f, 0.f, 3.19f), glm::vec3(-1.f, 0.f, 0.f)});
+	cam.addWall(4, {glm::vec3(6.23f, 0.f, -4.86f), glm::vec3(-1.f, 0.f, 0.f)});
+
+
 	float lastFrameTime = glfwGetTime();
 
 	// Disabling mouse cursor
@@ -392,22 +408,7 @@ int main() {
 
 
 		////////////////////IAN DRAWINGS///////////////////////////
-		//stop signs
-		//stop.draw(&depthShader);
-		//stop2.draw(&depthShader);
-		//stop3.draw(&depthShader);
-		//stop4.draw(&depthShader);
-
-		//cars
-		//lexus.draw(&depthShader);
-		//lexus2.draw(&depthShader);
-		//lexus3.draw(&depthShader);
-		//lexus4.draw(&depthShader);
-		//lexus5.draw(&depthShader);
-		//lexus6.draw(&depthShader);
-		//lexus7.draw(&depthShader);
-		//lexus8.draw(&depthShader);
-
+		
 		for (float i = 0.0; i < 26.0; i++) {
 			tcs[i]->draw(&depthShader);
 			tcs2[i]->draw(&depthShader);
@@ -468,19 +469,7 @@ int main() {
 		for (auto i : modelsList)
 			i->draw(&sh);
 
-		//stop.draw(&sh);
-		//stop2.draw(&sh);
-		//stop3.draw(&sh);
-		//stop4.draw(&sh);
-		
-		//lexus.draw(&sh);
-		//lexus2.draw(&sh);
-		//lexus3.draw(&sh);
-		//lexus4.draw(&sh);
-		//lexus5.draw(&sh);
-		//lexus6.draw(&sh);
-		//lexus7.draw(&sh);
-		//lexus8.draw(&sh);
+
 		for (float i = 0.0; i < 26.0; i++) {
 			tcs[i]->draw(&sh);
 			tcs2[i]->draw(&sh);
@@ -507,6 +496,30 @@ int main() {
 		// Coordinate Axis Lines
 		int scale = 5; // 5 Unit length
 		glLineWidth(5);
+
+
+		//X
+		scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale * 1.0f, 1.1f, 1.1f));
+		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(scale * 0.5f, 0.0f, 0.0f));
+		worldMatrix = translationMatrix * scalingMatrix;
+		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(1.0f, 0.0f, 0.0f));
+
+		//Y
+		rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, scale * 0.5f, 0.0f));
+		worldMatrix = translationMatrix * rotation * scalingMatrix;
+		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		//Z
+		rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, scale * 0.5f));
+		worldMatrix = translationMatrix * rotation * scalingMatrix;
+		//_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		glLineWidth(1);
+
 
 
 		// Swap buffers

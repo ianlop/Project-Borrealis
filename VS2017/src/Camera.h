@@ -11,6 +11,8 @@
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <vector>
+#include <iostream>
 
 #ifndef _PROJECTION_TYPE
 enum ProjectionType {
@@ -36,6 +38,31 @@ public:
 
 	void zoom(double amount);
 
+	void addWall(int loc, std::pair<glm::vec3, glm::vec3> addition) {
+		switch (loc)
+		{
+		//north
+		case 1:
+			camNorthWalls.push_back(addition);
+			break;
+		//south
+		case 2:
+			camSouthWalls.push_back(addition);
+			break;
+		//east
+		case 3:
+			camEastWalls.push_back(addition);
+			break;
+		//west
+		case 4:
+			camWestWalls.push_back(addition);
+			break;
+		default:
+			std::cout << "Invalid direction" << std::endl;
+			break;
+		}
+	}
+
 private:
 	float* speed;
 	float radius;
@@ -49,6 +76,12 @@ private:
 	float yaw, pitch;
 	float fov;
 
-	bool checkCollision(glm::vec3 pos, glm::vec3 norm);
+	bool checkCollision(glm::vec3 pos, glm::vec3 norm, float range = 1);
+
+	//vector containing a list of walls to check for collision against
+	std::vector<std::pair<glm::vec3, glm::vec3>> camNorthWalls;
+	std::vector<std::pair<glm::vec3, glm::vec3>> camSouthWalls;
+	std::vector<std::pair<glm::vec3, glm::vec3>> camEastWalls;
+	std::vector<std::pair<glm::vec3, glm::vec3>> camWestWalls;
 };
 
