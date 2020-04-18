@@ -48,5 +48,7 @@ private:
 	//double mousePosX, mousePosY;
 	float yaw, pitch;
 	float fov;
+
+	bool checkCollision(glm::vec3 pos, glm::vec3 norm);
 };
 

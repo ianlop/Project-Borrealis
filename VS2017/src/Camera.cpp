@@ -87,6 +87,12 @@ void Camera::processMovement(GLFWwindow* win, float deltaTime)
 		*camEye += glm::normalize(*camUp) * normalizedSpeed;
 	}
 
+	//colision with ground
+	if (checkCollision(glm::vec3(0.f), glm::vec3(0.f, 1.f, 0.f)))
+		camEye->y = 1.f;
+
+	std::cout << checkCollision(glm::vec3(0.f), glm::vec3(0.f, 1.f, 0.f)) << std::endl;
+	std::cout << camEye->y << std::endl;
 
 	yaw += dx;
 	pitch += dy;
@@ -139,4 +145,13 @@ void Camera::reset() {
 void Camera::zoom(double amount)
 {
 	fov += amount;
+}
+
+bool Camera::checkCollision(glm::vec3 pos, glm::vec3 norm)
+{
+	//printf("\nThe to pos vector: %d\n", (*camEye - pos).y);
+	//printf("The normal vector: %d\n", norm);
+	//printf("The Dot Product: %d\n\n", glm::dot(norm, *camEye - pos));
+
+	return glm::dot(norm, *camEye - pos) < 1;
 }
