@@ -140,9 +140,9 @@ int main() {
 
 	Texture snow("assets/textures/snow.jpg", GL_TEXTURE_2D);
 	Texture asphalt("assets/textures/asphalt.jpg", GL_TEXTURE_2D);
-	Texture col("assets/textures/color.png", GL_TEXTURE_2D);
+	//Texture col("assets/textures/color.png", GL_TEXTURE_2D);
 	plane.setTexture(&asphalt);
-	plane.setTexture(&col);
+	//plane.setTexture(&col);
 
 	////////////////////IAN DRAWINGS/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -457,10 +457,7 @@ int main() {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 
-		//drawing
-		//Drawing snowman at origin
-		glLineWidth(1);
-		glPointSize(10);
+
 
 		////////////////////IAN DRAWINGS///////////////////////////
 		plane.draw(&sh);
@@ -489,39 +486,6 @@ int main() {
 		}
 		////////////////////IAN DRAWINGS///////////////////////////
 
-		//// Rendering Axis Lines
-		//glm::mat4 scalingMatrix;
-		//glm::mat4 translationMatrix;
-		//glm::mat4 worldMatrix;
-		//glm::mat4 rotation;
-		//// Coordinate Axis Lines
-		//int scale = 5; // 5 Unit length
-		//glLineWidth(5);
-
-
-		////X
-		//scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale * 1.0f, 1.1f, 1.1f));
-		//translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(scale * 0.5f, 0.0f, 0.0f));
-		//worldMatrix = translationMatrix * scalingMatrix;
-		//_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(1.0f, 0.0f, 0.0f));
-
-		////Y
-		//rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		//translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, scale * 0.5f, 0.0f));
-		//worldMatrix = translationMatrix * rotation * scalingMatrix;
-		//_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 1.0f, 0.0f));
-
-		////Z
-		//rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, scale * 0.5f));
-		//worldMatrix = translationMatrix * rotation * scalingMatrix;
-		////_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-		glLineWidth(1);
-
-
 
 		// Swap buffers
 		glfwSwapBuffers(win);
@@ -537,8 +501,6 @@ int main() {
 		if (glfwGetKey(win, GLFW_KEY_HOME) == GLFW_PRESS) {
 			cam.reset();
 		}
-
-
 
 		glUseProgram(0);
 	}
