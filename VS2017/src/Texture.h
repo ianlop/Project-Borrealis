@@ -25,10 +25,11 @@ private:
 
 public:
 	Texture(std::string file, unsigned int _type);
-	~Texture();
+	virtual ~Texture();
 
 	void Bind();
 	void Unbind();
-	static GLuint LoadSkybox(std::vector<const GLchar*> faces);
+
+	//static GLuint LoadSkybox(std::vector<const GLchar*> faces);
 };
 

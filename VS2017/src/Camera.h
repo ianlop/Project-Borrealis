@@ -36,6 +36,9 @@ public:
 
 	void zoom(double amount);
 
+	glm::mat4 GetViewMatrix() const { return viewMatrix; }
+	glm::mat4 GetProjectionMatrix() const { return projectionMatrix; }
+
 private:
 	float* speed;
 	float radius;

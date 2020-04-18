@@ -43,6 +43,74 @@ static bool glError(const char* funct, const char* file, int line) {
 Camera cam;
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
+unsigned int loadCubemap(std::vector<std::string> faces)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+	int width, height, nrChannels;
+	for (unsigned int i = 0; i < faces.size(); i++)
+	{
+		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+			);
+			stbi_image_free(data);
+		}
+		else
+		{
+			std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+			stbi_image_free(data);
+		}
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	return textureID;
+}
+
+unsigned int loadTexture(std::string path)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+
+	int width, height, nrComponents;
+	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrComponents, 0);
+	if (data)
+	{
+		GLenum format;
+		if (nrComponents == 1)
+			format = GL_RED;
+		else if (nrComponents == 3)
+			format = GL_RGB;
+		else if (nrComponents == 4)
+			format = GL_RGBA;
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		stbi_image_free(data);
+	}
+	else
+	{
+		std::cout << "Texture failed to load at path: " << path << std::endl;
+		stbi_image_free(data);
+	}
+
+	return textureID;
+}
 
 int main() {
 
@@ -81,63 +149,82 @@ int main() {
 	// Shader Creation
 	Shader sh("assets/shaders/vertexShader.glsl", "assets/shaders/fragShader.glsl");
 	Shader depthShader("assets/shaders/shadowVert.glsl", "assets/shaders/shadowFrag.glsl");
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Shader shSkybox("assets/shaders/skyboxVertex.glsl", "assets/shaders/skyboxFragment.glsl");
 
-	GLfloat skyboxVertices[] = {
-		
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
+	float skyboxVertices[] = {
+	// positions          
+	-1.0f,  1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
 
-		-1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
 
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
 
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
 
-		-1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	 1.0f,  1.0f, -1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f, -1.0f,
 
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f
-	};
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	 1.0f, -1.0f,  1.0f
+};
 
-	// VAO for skybox
-	GLuint skyboxVAO, skyboxVBO;
+	// skybox VAO
+	unsigned int skyboxVAO, skyboxVBO;
 	glGenVertexArrays(1, &skyboxVAO);
 	glGenBuffers(1, &skyboxVBO);
 	glBindVertexArray(skyboxVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
-	glBindVertexArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	// Skybox Textures
+	std::vector<std::string> faces{
+		"assets/textures/skybox_images/right.png",
+		"assets/textures/skybox_images/left.png",
+		"assets/textures/skybox_images/top.png",
+		"assets/textures/skybox_images/down.png",
+		"assets/textures/skybox_images/back.png",
+		"assets/textures/skybox_images/front.png"
+	};
+
+	unsigned int cubemapText = loadCubemap(faces);
+	shSkybox.use();
+	shSkybox.setInt("skybox", 0);
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 	// Arrays for the shapes used in rendering
 	coloredVertex line[] = {
@@ -152,72 +239,12 @@ int main() {
 
 	objMesh plane("assets/models/plane.ob", glm::vec3(.8f), glm::vec3(0.f), glm::vec3(50.f, 1.f, 50.f));
 
-	//objMesh id("assets/models/sphere.obj", glm::vec3(1.f), glm::vec3(10.f, 1.1f, 10.f), glm::vec3(.1f));
-
-	objMesh torso("assets/models/sphere.ob", glm::vec3(.99f), glm::vec3(0.f, 2.1f, 0.f), glm::vec3(1.5f, 1.f, 1.f));
-	objMesh button1("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 2.6f, .9f), glm::vec3(.2f, .2f, .2f));
-	objMesh button2("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 2.1f, .9f), glm::vec3(.2f, .2f, .2f));
-	objMesh button3("assets/models/sphere.ob", glm::vec3(0.f), glm::vec3(0.f, 1.6f, .9f), glm::vec3(.2f, .2f, .2f));
-
-	objMesh head("assets/models/sphere.ob", glm::vec3(1.f), glm::vec3(0.f, 3.6f, 0.f), glm::vec3(1.2f));
-	objMesh hat1("assets/models/cube.ob", glm::vec3(1.f), glm::vec3(0.f, 4.8f, 0.f), glm::vec3(1.f, .3f, 1.f));
-	objMesh hat2("assets/models/cube.ob", glm::vec3(1.f, .88f, .42f), glm::vec3(0.f, 5.8f, 0.f), glm::vec3(.7f, .5f, .7f));
-	objMesh hat3("assets/models/cube.ob", glm::vec3(1.f), glm::vec3(0.f, 6.8f, 0.f), glm::vec3(.25f, .7f, .25f));
-	objMesh eye("assets/models/cube.ob", glm::vec3(1.f), glm::vec3(0.f, 4.1f, 1.f), glm::vec3(.8f, .2f, .2f));
-
-	objMesh leftArm("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(2.8f, 2.1f, 0.f), glm::vec3(1.5f, .1f, .1f));
-	objMesh rightArm("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(-2.8f, 2.1f, 0.f), glm::vec3(1.5f, .1f, .1f));
-
-	objMesh leftLeg("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(.5f, .3f, 0.f), glm::vec3(.2f, 1.f, .2f));
-	objMesh rightLeg("assets/models/cube.ob", glm::vec3(.5f, .37f, .2f), glm::vec3(-.5f, .3f, 0.f), glm::vec3(.2f, 1.f, .2f));
-	objMesh leftFoot("assets/models/cube.ob", glm::vec3(0.f), glm::vec3(.5f, .1f, 0.f), glm::vec3(.35f, .1f, .35f));
-	objMesh rightFoot("assets/models/cube.ob", glm::vec3(0.f), glm::vec3(-.5f, .1f, 0.f), glm::vec3(.35f, .1f, .35f));
-
-	objMesh scarf("assets/models/cube.ob", glm::vec3(.81f, .55f, .18f), glm::vec3(0.f, 3.f, 0.f), glm::vec3(1.2f, .2f, 1.f), glm::vec3(0.f, 0.f, 10.f));
-	objMesh scarfBit("assets/models/cube.ob", glm::vec3(.81f, .55f, .18f), glm::vec3(1.f, 3.f, 0.f), glm::vec3(1.2f, .2f, .2f), glm::vec3(0.f, 0.f, 10.f));
-
-	objModel olaf;
-	olaf.addMesh(&torso);
-	olaf.addMesh(&button1);
-	olaf.addMesh(&button2);
-	olaf.addMesh(&button3);
-	olaf.addMesh(&head);
-	olaf.addMesh(&hat1);
-	olaf.addMesh(&hat2);
-	olaf.addMesh(&hat3);
-	olaf.addMesh(&eye);
-	olaf.addMesh(&leftArm);
-	olaf.addMesh(&rightArm);
-	olaf.addMesh(&leftLeg);
-	olaf.addMesh(&leftFoot);
-	olaf.addMesh(&rightLeg);
-	olaf.addMesh(&rightFoot);
-	olaf.addMesh(&scarf);
-	olaf.addMesh(&scarfBit);
 
 	//Textures!!1
 
 	Texture snow("assets/textures/snow.jpg", GL_TEXTURE_2D);
-	plane.setTexture(&snow);
-	Texture carrot("assets/textures/carrot.jpg", GL_TEXTURE_2D);
-	eye.setTexture(&carrot);
-	Texture metal("assets/textures/metal.jpg", GL_TEXTURE_2D);
-	hat1.setTexture(&metal);
-	hat2.setTexture(&metal);
-	hat3.setTexture(&metal);
-
 	Texture col("assets/textures/color.png", GL_TEXTURE_2D);
-
-	// Skybox Textures
-	std::vector<const GLchar*> faces;
-	faces.push_back("assets/textures/skybox_images/right.png");
-	faces.push_back("assets/textures/skybox_images/left.png");
-	faces.push_back("assets/textures/skybox_images/top.png");
-	faces.push_back("assets/textures/skybox_images/down.png");
-	faces.push_back("assets/textures/skybox_images/back.png");
-	faces.push_back("assets/textures/skybox_images/front.png");
-
-	GLuint skyboxTexture = Texture::LoadSkybox(faces);
+	plane.setTexture(&snow);
 
 	//configuring depth map
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -247,15 +274,9 @@ int main() {
 	sh.setInt("shadowMap", 1);
 
 
-	//glm::vec3 lightPos = glm::vec3(0.f, 30.f, 0.f);
-	//glm::vec3 lightPos = glm::vec3(-1.f, 4.f, -2.f);
 	glm::vec3 lightPos = glm::vec3(0.f, 20.f, -1.f);
 
-	hat1.setShiny(256.f);
-	hat3.setShiny(256.f);
 
-
-	
 	// Setting up Camera with starting point
 	float spd = 1.0f;
 	
@@ -282,7 +303,6 @@ int main() {
 	bool shadows = true;
 	bool hasTurned = false;
 
-	//glm::mat4 projection = glm::perspective(cam.GetZoom(), (float)WIDTH / (float)HEIGHT, 0.1f, 1000.0f);
 
 	while (!glfwWindowShouldClose(win))
 	{
@@ -294,7 +314,6 @@ int main() {
 		glClearColor(0.11f, 0.44f, 0.68f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//first pass, render shadow map
@@ -316,7 +335,7 @@ int main() {
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		plane.draw(&depthShader);
-		olaf.draw(&depthShader);
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -326,6 +345,8 @@ int main() {
 
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////
+
+		
 		//second pass, render scene
 		glViewport(0, 0, WIDTH, HEIGHT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -354,53 +375,27 @@ int main() {
 		glLineWidth(1);
 		glPointSize(10);
 
-		
 		plane.draw(&sh);
-		olaf.draw(&sh);
-		//id.draw(&sh, GL_TRIANGLES);
+
+		///////////////////////////////////////////////////////// Drawing Skybox
+
+		// draw skybox as last
+		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+		shSkybox.use();
+		glm::mat4 view = glm::mat4(glm::mat3(cam.GetViewMatrix())); // remove translation from the view matrix
+		glm::mat4 projection = cam.GetProjectionMatrix();
+		shSkybox.setMat4("view", view);
+		shSkybox.setMat4("projection", projection);
+		// skybox cube
+		glBindVertexArray(skyboxVAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapText);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+		glDepthFunc(GL_LESS); // set depth function back to default
 
 
-		// Rendering
-		glm::mat4 scalingMatrix;
-		glm::mat4 translationMatrix;
-		glm::mat4 worldMatrix;
-		glm::mat4 rotation;
-
-		// Coordinate Axis Lines
-		int scale = 5; // 5 Unit length
-		glLineWidth(5);
-
-		//X
-		scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale * 1.0f, 1.1f, 1.1f));
-		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(scale * 0.5f, 0.0f, 0.0f));
-		worldMatrix = translationMatrix * scalingMatrix;
-		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(1.0f, 0.0f, 0.0f));
-
-		//Y
-		rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, scale * 0.5f, 0.0f));
-		worldMatrix = translationMatrix * rotation * scalingMatrix;
-		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 1.0f, 0.0f));
-
-		//Z
-		rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, scale * 0.5f));
-		worldMatrix = translationMatrix * rotation * scalingMatrix;
-		_line.draw(sh, GL_LINES, 0, 3, worldMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
-
-		// Drawing Skybox
-		//glDepthFunc(GL_LEQUAL);
-		//shSkybox.use();
-		//glm::mat4 view = glm::mat4(glm::mat3(cam.updateView(shSkybox, win, dt))); // was just view before
-
-		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-		//glUniformMatrix4fv(glGetUniformLocation(shSkybox.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-		//glBindVertexArray(skyboxVAO);
-		//glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
-		//glBindVertexArray(0);
-		//glDepthFunc(GL_LESS);
+		///////////////////////////////////////////////////////////
 
 		glfwSwapBuffers(win);
 		// Check/call events
@@ -411,60 +406,8 @@ int main() {
 			// Escape to close window
 			glfwSetWindowShouldClose(win, true);
 		}
-		if (glfwGetKey(win, GLFW_KEY_L) == GLFW_PRESS) {
-			// Wireframe with GL_LINE_LOOP
-			olaf.changeType(GL_LINE_LOOP);
-		}
-		if (glfwGetKey(win, GLFW_KEY_T) == GLFW_PRESS) {
-			// Shape with GL_TRIANGLES
-			olaf.changeType(GL_TRIANGLES);
-		}
-		if (glfwGetKey(win, GLFW_KEY_P) == GLFW_PRESS) {
-			// Points with GL_POINTS
-			olaf.changeType(GL_POINTS);
-		}
-
-		
-
 		if (glfwGetKey(win, GLFW_KEY_HOME) == GLFW_PRESS) {
 			cam.reset();
-		}
-
-
-		if (glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS)
-		{
-			plane.setTexture(&snow);
-			eye.setTexture(&carrot);
-			hat1.setTexture(&metal);
-			hat2.setTexture(&metal);
-			hat3.setTexture(&metal);
-
-			eye.setColor(glm::vec3(1.f));
-			hat1.setColor(glm::vec3(1.f));
-			hat3.setColor(glm::vec3(1.f));
-		}
-		if (glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS)
-		{
-			plane.setTexture(&col);
-			eye.setTexture(&col);
-			hat1.setTexture(&col);
-			hat2.setTexture(&col);
-			hat3.setTexture(&col);
-
-			eye.setColor(glm::vec3(0.f));
-			hat1.setColor(glm::vec3(0.f));
-			hat3.setColor(glm::vec3(0.f));
-		}
-
-		if (glfwGetKey(win, GLFW_KEY_B) == GLFW_PRESS && !hasTurned)
-		{
-			shadows = !shadows;
-			hasTurned = true;
-		}
-		if (glfwGetKey(win, GLFW_KEY_B) == GLFW_RELEASE)
-		{
-			//shadows = false;
-			hasTurned = false;
 		}
 
 		glUseProgram(0);
