@@ -292,6 +292,7 @@ int main() {
 	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
 	std::uniform_real_distribution<> dis(-45.0, 45.0);
 
+
 	//cars
 	objMesh lexus("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(dis(gen), -0.05f, -1.0), glm::vec3(0.4f / 12, 0.4f / 12, 0.4f / 12));
 	objMesh lexus2("assets/models/lexus.ob", glm::vec3(.99f), glm::vec3(-10.0f / 12, -0.05f, dis(gen)), glm::vec3(0.4f / 12, 0.4f / 12, 0.4f / 12));
