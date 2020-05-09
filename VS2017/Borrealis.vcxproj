@@ -100,7 +100,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Grid.cpp" />
-    <ClCompile Include="src\Shadow.cpp" />
     <ClCompile Include="src\objMesh.cpp" />
     <ClCompile Include="src\objModel.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
@@ -112,7 +111,6 @@
   <ItemGroup>
     <ClInclude Include="src\Heights.h" />
     <ClInclude Include="src\Grid.h" />
-    <ClInclude Include="src\Shadow.h" />
     <ClInclude Include="src\objMesh.h" />
     <ClInclude Include="src\objModel.h" />
     <ClInclude Include="src\Mesh.h" />

@@ -44,9 +44,6 @@
     <ClCompile Include="src\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shadow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -65,8 +62,8 @@
     <ClInclude Include="src\objMesh.h" />
     <ClInclude Include="src\objModel.h" />
     <ClInclude Include="src\Texture.h" />
-    <ClInclude Include="src\Shadow.h" />
     <ClInclude Include="src\Heights.h" />
+    <ClInclude Include="src\Grid.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragShader.glsl">
